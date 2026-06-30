@@ -1,6 +1,6 @@
 ---
 title: test123
-published: 2026-6-30
+published: 2026-06-30
 pinned: false
 description: 一个包含 Mermaid 的 Markdown 博客文章简单示例。
 tags: [test, 博客, Mermaid, Firefly]
