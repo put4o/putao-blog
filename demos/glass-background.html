@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>玻璃分栏背景 Demo</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; font-family: 'Inter', system-ui, sans-serif; }
+
+  /* ====== 1. 舞台：基础蓝色渐变 ====== */
+  .stage {
+    position: relative;
+    min-height: 100vh;
+    overflow: hidden;
+    background:
+      radial-gradient(ellipse 60% 50% at 20% 25%, #5a9fe0 0%, transparent 60%),
+      radial-gradient(ellipse 50% 60% at 85% 75%, #2a5fa8 0%, transparent 60%),
+      linear-gradient(135deg, #1e4a8a 0%, #2c6cbc 50%, #143765 100%);
+  }
+
+  /* ====== 2. 均匀垂直分栏（核心） ====== */
+  .columns {
+    position: absolute;
+    inset: 0;
+    display: flex;
+  }
+  .col {
+    flex: 1;                       /* 等宽分栏：栏数 = 容器内 div 数 */
+    position: relative;
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
+  }
+  .col:last-child { border-right: none; }
+
+  /* 奇偶栏交替亮度：复刻金属/百叶的细微明暗差 */
+  .col:nth-child(odd)  {
+    background: linear-gradient(180deg,
+      rgba(255,255,255,0.015) 0%,
+      rgba(255,255,255,0.055) 50%,
+      rgba(255,255,255,0.015) 100%);
+  }
+  .col:nth-child(even) {
+    background: linear-gradient(180deg,
+      rgba(0,0,0,0.04) 0%,
+      rgba(0,0,0,0.10) 50%,
+      rgba(0,0,0,0.04) 100%);
+  }
+
+  /* ====== 3. 动态光斑 ====== */
+  .glow {
+    position: absolute;
+    width: 700px;
+    height: 700px;
+    border-radius: 50%;
+    filter: blur(80px);
+    mix-blend-mode: screen;
+    will-change: transform;
+  }
+  .glow.g1 {
+    top: -250px; left: 5%;
+    background: radial-gradient(circle, rgba(160,210,255,0.45), transparent 70%);
+    animation: drift1 14s ease-in-out infinite;
+  }
+  .glow.g2 {
+    bottom: -300px; right: -5%;
+    background: radial-gradient(circle, rgba(120,180,240,0.35), transparent 70%);
+    animation: drift2 18s ease-in-out infinite;
+  }
+  .glow.g3 {
+    top: 35%; left: 55%;
+    background: radial-gradient(circle, rgba(200,220,255,0.25), transparent 70%);
+    animation: drift3 22s ease-in-out infinite;
+  }
+
+  @keyframes drift1 {
+    0%,100% { transform: translate(0,0)       scale(1);   }
+    50%     { transform: translate(120px,60px) scale(1.15); }
+  }
+  @keyframes drift2 {
+    0%,100% { transform: translate(0,0)        scale(1);   }
+    50%     { transform: translate(-150px,-80px) scale(1.2); }
+  }
+  @keyframes drift3 {
+    0%,100% { transform: translate(0,0)         scale(0.9); }
+    50%     { transform: translate(-200px,150px) scale(1.1); }
+  }
+
+  /* ====== 4. 玻璃面板 ====== */
+  .glass {
+    position: relative;
+    z-index: 10;
+    margin: 12vh auto;
+    max-width: 960px;
+    padding: 96px 72px;
+    color: #fff;
+
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(24px) saturate(160%);
+    -webkit-backdrop-filter: blur(24px) saturate(160%);
+
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 20px;
+    box-shadow:
+      0 20px 60px rgba(0, 20, 50, 0.35),
+      inset 0 1px 0 rgba(255, 255, 255, 0.25),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+  }
+  .glass h1 {
+    font-size: clamp(2.4rem, 6vw, 4.5rem);
+    font-weight: 300;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+
+  /* 顶部高光描边，强化玻璃边缘 */
+  .glass::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg,
+      rgba(255,255,255,0.4),
+      rgba(255,255,255,0.05) 40%,
+      rgba(255,255,255,0.2));
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  /* ====== 5. 噪点纹理（提升质感，可选） ====== */
+  .noise {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.04;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+</style>
+</head>
+<body>
+  <div class="stage">
+    <!-- 均匀分栏：每加一个 .col 就多一栏 -->
+    <div class="columns" id="cols"></div>
+
+    <div class="glow g1"></div>
+    <div class="glow g2"></div>
+    <div class="glow g3"></div>
+    <div class="noise"></div>
+
+    <div class="glass">
+      <h1>You deliver the care.<br>We bring clarity.</h1>
+    </div>
+  </div>
+
+  <script>
+    // JS 生成 12 栏（也可改为 16/20 栏，密度自定）
+    const cols = document.getElementById('cols');
+    const N = 12;
+    for (let i = 0; i < N; i++) cols.appendChild(Object.assign(document.createElement('div'), { className: 'col' }));
+  </script>
+</body>
+</html>

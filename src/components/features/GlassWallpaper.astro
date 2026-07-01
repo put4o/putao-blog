@@ -1,0 +1,227 @@
+---
+/**
+ * GlassWallpaper - 玻璃分栏动态光斑 CSS 背景
+ *
+ * 作为 #banner-images-container 的内容渲染，纯 CSS + 极少 JS。
+ * 关键设计：容器本身保持透明，列 + 光斑 + 噪点分层叠加，方便上层 dim/overlay/waves
+ * 继续按原本的方式叠在其上方。
+ *
+ * 启用方法：把 src/config/backgroundWallpaper.ts 中的 desktop 和 mobile 数组都设为 []
+ * 想换主题（如紫色）：<GlassWallpaper theme="purple" />
+ */
+
+export interface Props {
+	/** 桌面端垂直分栏数量。值越大栏越细，默认 14 */
+	desktopColumns?: number;
+	/** 移动端垂直分栏数量，默认 10 */
+	mobileColumns?: number;
+	/** 玻璃色调主题：blue / purple / teal / rose */
+	theme?: "blue" | "purple" | "teal" | "rose";
+}
+
+const {
+	desktopColumns = 20,
+	mobileColumns = 12,
+	theme = "blue",
+} = Astro.props;
+---
+
+<div class="glass-wallpaper" data-theme={theme}>
+	<div class="glass-columns" id="glass-columns"></div>
+	<div class="glass-glow g1"></div>
+	<div class="glass-glow g2"></div>
+	<div class="glass-glow g3"></div>
+	<div class="glass-noise"></div>
+</div>
+
+<script is:inline define:vars={{ colsDesktop: desktopColumns, colsMobile: mobileColumns }}>
+	(function () {
+		var root = document.getElementById("glass-columns");
+		if (!root) return;
+
+		// 关键：读取 Astro 给 #glass-columns 自动注入的 data-astro-cid-* 属性，
+		// 同步到 JS 动态创建的 .glass-col 上，让 .glass-col[data-astro-cid-xxx] 选择器能命中。
+		var astroCid = "";
+		for (var ai = 0; ai < root.attributes.length; ai++) {
+			var a = root.attributes[ai];
+			if (a.name.indexOf("data-astro-cid-") === 0) {
+				astroCid = a.name;
+				break;
+			}
+		}
+
+		function detect() {
+			return window.innerWidth >= 1024 ? "desktop" : "mobile";
+		}
+
+		function render() {
+			var m = detect();
+			var n = m === "desktop" ? colsDesktop : colsMobile;
+			var html = "";
+			// Astro 作用域 CSS 匹配的是 [data-astro-cid-xxx] 属性，所以要写到 attribute 不是 class
+			var attr = astroCid ? ' ' + astroCid + '=""' : "";
+			for (var ri = 0; ri < n; ri++) html += '<div class="glass-col"' + attr + '></div>';
+			root.innerHTML = html;
+		}
+
+		// 防止重复初始化（Swup 切页后会重新插入节点）
+		if (!root.dataset.bound) {
+			root.dataset.bound = "true";
+			render();
+			var resizeTimer = null;
+			window.addEventListener("resize", function () {
+				if (resizeTimer) clearTimeout(resizeTimer);
+				resizeTimer = setTimeout(render, 150);
+			});
+			// Swup 切页时重新生成列
+			document.addEventListener("astro:page-load", function () {
+				var r = document.getElementById("glass-columns");
+				if (r) r.dataset.bound = "";
+			});
+		}
+	})();
+</script>
+
+<style>
+	/* 根据 data-theme 选择底色 + 三色光斑 */
+	.glass-wallpaper[data-theme="blue"] {
+		--glass-base:
+			radial-gradient(ellipse 60% 50% at 20% 25%, #5a9fe0 0%, transparent 60%),
+			radial-gradient(ellipse 50% 60% at 85% 75%, #2a5fa8 0%, transparent 60%),
+			linear-gradient(135deg, #1e4a8a 0%, #2c6cbc 50%, #143765 100%);
+		--glass-g1: rgba(160, 210, 255, 0.45);
+		--glass-g2: rgba(120, 180, 240, 0.35);
+		--glass-g3: rgba(200, 220, 255, 0.25);
+	}
+	.glass-wallpaper[data-theme="purple"] {
+		--glass-base:
+			radial-gradient(ellipse 60% 50% at 20% 25%, #8a6dd6 0%, transparent 60%),
+			radial-gradient(ellipse 50% 60% at 85% 75%, #4f2fa3 0%, transparent 60%),
+			linear-gradient(135deg, #2a1f63 0%, #5b3a9d 50%, #1a1248 100%);
+		--glass-g1: rgba(200, 170, 255, 0.45);
+		--glass-g2: rgba(160, 120, 230, 0.35);
+		--glass-g3: rgba(220, 200, 255, 0.25);
+	}
+	.glass-wallpaper[data-theme="teal"] {
+		--glass-base:
+			radial-gradient(ellipse 60% 50% at 20% 25%, #4ec5b9 0%, transparent 60%),
+			radial-gradient(ellipse 50% 60% at 85% 75%, #1f8a85 0%, transparent 60%),
+			linear-gradient(135deg, #0e3d3d 0%, #1f6862 50%, #062322 100%);
+		--glass-g1: rgba(170, 240, 230, 0.45);
+		--glass-g2: rgba(120, 210, 200, 0.35);
+		--glass-g3: rgba(200, 255, 245, 0.25);
+	}
+	.glass-wallpaper[data-theme="rose"] {
+		--glass-base:
+			radial-gradient(ellipse 60% 50% at 20% 25%, #d6608a 0%, transparent 60%),
+			radial-gradient(ellipse 50% 60% at 85% 75%, #a32858 0%, transparent 60%),
+			linear-gradient(135deg, #5a1530 0%, #8e2858 50%, #3a0a20 100%);
+		--glass-g1: rgba(255, 180, 200, 0.45);
+		--glass-g2: rgba(230, 120, 150, 0.35);
+		--glass-g3: rgba(255, 210, 225, 0.25);
+	}
+
+	/* 容器：继承自父级 #banner-images-container，绝对铺满 */
+	.glass-wallpaper {
+		position: absolute;
+		inset: 0;
+		overflow: hidden;
+		background: var(--glass-base);
+	}
+
+	/* 均匀垂直分栏 + 毛玻璃效果 */
+	.glass-columns {
+		position: absolute;
+		inset: 0;
+		display: flex;
+	}
+	.glass-col {
+		flex: 1;
+		position: relative;
+		border-right: 3px solid rgba(255, 255, 255, 0.07);
+		/* 毛玻璃：模糊 + 适度饱和度，让彩色渐变底色透过玻璃显示 */
+		backdrop-filter: blur(8px) saturate(140%);
+		-webkit-backdrop-filter: blur(8px) saturate(140%);
+		/* 微透明白色底 + inset 阴影，让分界更明显 */
+		background: rgba(146, 146, 146, 0.05);
+		box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.06);
+	}
+	.glass-col:last-child {
+		border-right: none;
+	}
+
+	/* 动态光斑 */
+	.glass-glow {
+		position: absolute;
+		width: 700px;
+		height: 700px;
+		border-radius: 50%;
+		filter: blur(80px);
+		mix-blend-mode: screen;
+		will-change: transform;
+		pointer-events: none;
+	}
+	.glass-glow.g1 {
+		top: -250px;
+		left: 5%;
+		background: radial-gradient(circle, var(--glass-g1), transparent 70%);
+		animation: glassDrift1 14s ease-in-out infinite;
+	}
+	.glass-glow.g2 {
+		bottom: -300px;
+		right: -5%;
+		background: radial-gradient(circle, var(--glass-g2), transparent 70%);
+		animation: glassDrift2 18s ease-in-out infinite;
+	}
+	.glass-glow.g3 {
+		top: 35%;
+		left: 55%;
+		background: radial-gradient(circle, var(--glass-g3), transparent 70%);
+		animation: glassDrift3 22s ease-in-out infinite;
+	}
+
+	@keyframes glassDrift1 {
+		0%,
+		100% {
+			transform: translate(0, 0) scale(1);
+		}
+		50% {
+			transform: translate(120px, 60px) scale(1.15);
+		}
+	}
+	@keyframes glassDrift2 {
+		0%,
+		100% {
+			transform: translate(0, 0) scale(1);
+		}
+		50% {
+			transform: translate(-150px, -80px) scale(1.2);
+		}
+	}
+	@keyframes glassDrift3 {
+		0%,
+		100% {
+			transform: translate(0, 0) scale(0.9);
+		}
+		50% {
+			transform: translate(-200px, 150px) scale(1.1);
+		}
+	}
+
+	/* 噪点纹理：提升质感，opacity 极低不抢戏 */
+	.glass-noise {
+		position: absolute;
+		inset: 0;
+		pointer-events: none;
+		opacity: 0.04;
+		mix-blend-mode: overlay;
+		background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+	}
+
+	/* 尊重用户偏好：减少动画 */
+	@media (prefers-reduced-motion: reduce) {
+		.glass-glow {
+			animation: none !important;
+		}
+	}
+</style>
