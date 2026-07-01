@@ -1,0 +1,686 @@
+/* ============================================
+ * 主题定制样式 - kaiko.ai 风格
+ * 色板：#FBF9F1 底色 + 蓝色系强调
+ * ============================================ */
+
+:root {
+    /* 核心色板 - 直接使用品牌指定色值 */
+    --brand-cream: #FBF9F1;          /* 米白底色 */
+    --brand-blue: #2E6CB8;           /* 主蓝 */
+    --brand-blue-deep: #2B5DAA;      /* 深蓝 */
+    --brand-blue-mid: #3C70AE;       /* 中蓝 */
+    --brand-blue-darker: #325E98;    /* 更深蓝 */
+    --brand-blue-alt: #2B63AD;       /* 主蓝变体 */
+    --brand-blue-strong: #3467B6;    /* 强调蓝 */
+    --brand-blue-light: #749DDB;     /* 浅蓝点缀 */
+    --brand-charcoal: #434C54;       /* 深炭灰文字 */
+
+    /* 覆盖 oklch 默认变量 - 浅色模式 */
+    --page-bg: #FBF9F1;              /* 米白底色 */
+    --card-bg: #ffffff;              /* 卡片白色 */
+    --card-bg-transparent: rgba(251, 249, 241, 0.85);
+    --card-transparent-opacity: 0.85;
+
+    /* 主色 - 锁定为蓝色 */
+    --primary: #2E6CB8;
+
+    /* 按钮 - 药丸形 */
+    --btn-content: #ffffff;
+    --btn-regular-bg: #2E6CB8;
+    --btn-regular-bg-hover: #2B5DAA;
+    --btn-regular-bg-active: #325E98;
+
+    /* 按钮副样式（淡化背景） */
+    --btn-plain-bg-hover: rgba(46, 108, 184, 0.08);
+    --btn-plain-bg-active: rgba(46, 108, 184, 0.15);
+    --btn-card-bg-hover: rgba(46, 108, 184, 0.06);
+    --btn-card-bg-active: rgba(46, 108, 184, 0.12);
+
+    /* 文字与边框 */
+    --line-divider: rgba(67, 76, 84, 0.10);
+    --line-color: rgba(67, 76, 84, 0.15);
+    --muted: rgba(46, 108, 184, 0.08);
+    --selection-bg: rgba(46, 108, 184, 0.20);
+
+    /* 链接 */
+    --link-underline: rgba(46, 108, 184, 0.40);
+    --link-hover: #2E6CB8;
+    --link-active: #2B5DAA;
+
+    /* 文本颜色 */
+    --text-primary: #434C54;
+    --text-secondary: rgba(67, 76, 84, 0.75);
+    --text-tertiary: rgba(67, 76, 84, 0.55);
+
+    /* 卡片圆角 - 加大更现代 */
+    --radius-large: 1.25rem;
+
+    /* 卡片阴影 - 浮起感 */
+    --card-shadow: 0 1px 3px rgba(43, 93, 170, 0.04),
+                   0 8px 24px rgba(43, 93, 170, 0.08);
+
+    /* 渐变效果 - 蓝色色卡 */
+    --color-selection-bar: linear-gradient(
+        to right,
+        #FBF9F1, #FBF9F1, #FBF9F1, #FBF9F1, #FBF9F1, #FBF9F1,
+        #2E6CB8, #2B5DAA, #2B5DAA, #3C70AE, #325E98, #2B63AD,
+        #749DDB, #3467B6, #434C54
+    );
+}
+
+/* 暗色模式 - 蓝调深色 */
+:root.dark {
+    --page-bg: #0F1A2E;
+    --card-bg: #1A2742;
+    --card-bg-transparent: rgba(26, 39, 66, 0.7);
+    --primary: #749DDB;
+    --btn-content: #FBF9F1;
+    --btn-regular-bg: #3467B6;
+    --btn-regular-bg-hover: #3C70AE;
+    --btn-regular-bg-active: #2E6CB8;
+
+    --btn-plain-bg-hover: rgba(116, 157, 219, 0.10);
+    --btn-plain-bg-active: rgba(116, 157, 219, 0.18);
+    --btn-card-bg-hover: rgba(116, 157, 219, 0.08);
+    --btn-card-bg-active: rgba(116, 157, 219, 0.15);
+
+    --line-divider: rgba(116, 157, 219, 0.10);
+    --muted: rgba(116, 157, 219, 0.08);
+    --selection-bg: rgba(116, 157, 219, 0.25);
+
+    --text-primary: #FBF9F1;
+    --text-secondary: rgba(251, 249, 241, 0.75);
+    --text-tertiary: rgba(251, 249, 241, 0.55);
+
+    --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.3),
+                   0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+/* ============================================
+ * 全局文字样式
+ * ============================================ */
+
+html, body {
+    color: var(--text-primary);
+    background-color: var(--page-bg);
+    font-feature-settings: "ss01", "cv11";
+    -webkit-font-smoothing: antialiased;
+    font-family:
+        var(--font-inter),
+        var(--font-lxgw-wenkai),
+        ui-sans-serif,
+        system-ui,
+        sans-serif;
+}
+
+/* 标题统一使用衬线字体 */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--brand-charcoal);
+    letter-spacing: -0.015em;
+    font-family:
+        var(--font-lxgw-wenkai),
+        Georgia,
+        Cambria,
+        "Times New Roman",
+        "Songti SC",
+        "STSong",
+        serif;
+    font-weight: 600;
+}
+
+:root.dark h1,
+:root.dark h2,
+:root.dark h3,
+:root.dark h4,
+:root.dark h5,
+:root.dark h6 {
+    color: var(--brand-cream);
+}
+
+a {
+    color: var(--brand-blue);
+    transition: color 0.2s ease;
+}
+
+a:hover {
+    color: var(--brand-blue-deep);
+}
+
+/* 简体中文环境下优先使用霞鹜文楷 */
+:lang(zh) h1,
+:lang(zh) h2,
+:lang(zh) h3,
+:lang(zh) h4,
+:lang(zh) h5,
+:lang(zh) h6,
+:lang(zh-CN) h1,
+:lang(zh-CN) h2,
+:lang(zh-CN) h3,
+:lang(zh-CN) h4,
+:lang(zh-CN) h5,
+:lang(zh-CN) h6 {
+    font-family: var(--font-lxgw-wenkai), "KaiTi", "STKaiti", serif;
+    font-weight: 700;
+}
+
+:lang(zh),
+:lang(zh-CN) {
+    font-family: var(--font-lxgw-wenkai), "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+
+/* ============================================
+ * 卡片样式 - 浮起感
+ * ============================================ */
+
+.card-base {
+    background-color: var(--card-bg);
+    box-shadow: var(--card-shadow);
+}
+
+/* 关闭边框后，浮起感更明显 */
+:not(.enable-card-border) .card-base,
+:not(.enable-card-border) .card-base-transparent {
+    border: none !important;
+    box-shadow: var(--card-shadow);
+}
+
+/* ============================================
+ * 按钮样式 - 药丸形
+ * ============================================ */
+
+.btn-regular,
+.btn-regular-dark,
+.btn-plain,
+.btn-card {
+    border-radius: 9999px;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+}
+
+.btn-regular {
+    color: #ffffff;
+}
+
+.btn-regular:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(46, 108, 184, 0.25);
+}
+
+.btn-plain {
+    border-radius: 9999px;
+}
+
+/* ============================================
+ * Hero 区纯色化 - kaiko.ai 风格
+ * 把 banner 图区域强制改成纯蓝色
+ * ============================================ */
+
+/* 当 GlassWallpaper 组件存在时，禁用旧的手动分栏背景和伪元素分隔线，
+   让 GlassWallpaper 接管 #wallpaper-wrapper 的视觉呈现 */
+#wallpaper-wrapper:has(.glass-wallpaper) {
+    background: none !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    overflow: visible !important;
+    isolation: unset !important;
+}
+#wallpaper-wrapper:has(.glass-wallpaper)::after {
+    display: none !important;
+}
+
+@media (max-width: 1023px) {
+    #wallpaper-wrapper:has(.glass-wallpaper) {
+        background: none !important;
+        background-image: none !important;
+    }
+    #wallpaper-wrapper:has(.glass-wallpaper)::after {
+        display: none !important;
+    }
+}
+
+#wallpaper-wrapper {
+    /* 5 列玻璃分栏背景 - kaiko.ai 风格 */
+    background-color: #1A2D52;
+    background-image:
+        /* 第1列 - 深蓝玻璃 */
+        linear-gradient(180deg, rgba(15, 26, 46, 0.95), rgba(26, 45, 82, 0.95)),
+        /* 第2列 - 主蓝玻璃 */
+        linear-gradient(180deg, rgba(43, 93, 170, 0.90), rgba(46, 108, 184, 0.90)),
+        /* 第3列 - 中蓝玻璃 */
+        linear-gradient(180deg, rgba(46, 108, 184, 0.75), rgba(60, 112, 174, 0.75)),
+        /* 第4列 - 浅蓝玻璃 */
+        linear-gradient(180deg, rgba(116, 157, 219, 0.60), rgba(140, 178, 230, 0.60)),
+        /* 第5列 - 米白玻璃（亮处） */
+        linear-gradient(180deg, rgba(251, 249, 241, 0.60), rgba(251, 249, 241, 0.85));
+    background-repeat: no-repeat;
+    background-size: 20% 100%, 22% 100%, 22% 100%, 20% 100%, 16% 100%;
+    background-position: 0 0, 20% 0, 42% 0, 64% 0, 84% 0;
+    overflow: hidden;
+    position: relative;
+    isolation: isolate;
+}
+
+/* 列与列之间的玻璃分隔高光线 */
+#wallpaper-wrapper::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+    pointer-events: none;
+    background:
+        linear-gradient(90deg,
+            transparent 0%,
+            transparent 20%,
+            rgba(255, 255, 255, 0.25) 20%,
+            rgba(255, 255, 255, 0.25) calc(20% + 1.5px),
+            transparent calc(20% + 1.5px),
+            transparent 42%,
+            rgba(255, 255, 255, 0.25) 42%,
+            rgba(255, 255, 255, 0.25) calc(42% + 1.5px),
+            transparent calc(42% + 1.5px),
+            transparent 64%,
+            rgba(255, 255, 255, 0.28) 64%,
+            rgba(255, 255, 255, 0.28) calc(64% + 1.5px),
+            transparent calc(64% + 1.5px),
+            transparent 84%,
+            rgba(255, 255, 255, 0.35) 84%,
+            rgba(255, 255, 255, 0.35) calc(84% + 1.5px),
+            transparent calc(84% + 1.5px)
+        );
+    mix-blend-mode: screen;
+}
+
+#banner-images-container,
+.banner-image-slot-desktop,
+.banner-image-slot-mobile {
+    background: transparent !important;
+    background-color: transparent !important;
+}
+
+/* 把 banner 区域内的图片淡化隐藏，让分栏玻璃透出来 */
+#wallpaper-wrapper #banner,
+#wallpaper-wrapper img,
+#wallpaper-wrapper .slide-item img {
+    opacity: 0 !important;
+}
+
+/* 让文字 overlay 在分栏之上 */
+#banner-overlay-container,
+#banner-dim-container {
+    z-index: 30 !important;
+    position: absolute !important;
+}
+
+#banner-overlay-container .banner-home-text-overlay,
+#banner-overlay-container .banner-page-title-overlay,
+#banner-overlay-container .banner-post-meta-overlay {
+    position: absolute !important;
+    z-index: 30 !important;
+}
+
+/* banner 文字颜色 - 白色保持可读 */
+#wallpaper-wrapper .banner-text,
+#wallpaper-wrapper .banner-title,
+#wallpaper-wrapper .banner-subtitle {
+    color: #FBF9F1 !important;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* banner 装饰元素颜色 */
+#wallpaper-wrapper .banner-dot,
+#wallpaper-wrapper .banner-decoration {
+    background-color: #749DDB !important;
+}
+
+/* 暗色模式下 hero */
+:root.dark #wallpaper-wrapper {
+    background-color: #0A1426;
+    background-image:
+        linear-gradient(180deg, rgba(10, 20, 38, 0.97), rgba(15, 26, 46, 0.97)),
+        linear-gradient(180deg, rgba(26, 45, 82, 0.92), rgba(43, 93, 170, 0.92)),
+        linear-gradient(180deg, rgba(46, 108, 184, 0.82), rgba(60, 112, 174, 0.82)),
+        linear-gradient(180deg, rgba(116, 157, 219, 0.60), rgba(140, 178, 230, 0.60)),
+        linear-gradient(180deg, rgba(116, 157, 219, 0.35), rgba(180, 200, 230, 0.50));
+    background-repeat: no-repeat;
+    background-size: 20% 100%, 22% 100%, 22% 100%, 20% 100%, 16% 100%;
+    background-position: 0 0, 20% 0, 42% 0, 64% 0, 84% 0;
+}
+
+/* 移动端 - 简化为 3 列 */
+@media (max-width: 1023px) {
+    #wallpaper-wrapper {
+        background-image:
+            linear-gradient(180deg, rgba(15, 26, 46, 0.95), rgba(26, 45, 82, 0.95)),
+            linear-gradient(180deg, rgba(46, 108, 184, 0.82), rgba(60, 112, 174, 0.82)),
+            linear-gradient(180deg, rgba(116, 157, 219, 0.60), rgba(140, 178, 230, 0.60));
+        background-size: 33% 100%, 34% 100%, 33% 100%;
+        background-position: 0 0, 33% 0, 67% 0;
+    }
+    #wallpaper-wrapper::after {
+        background:
+            linear-gradient(90deg,
+                transparent 0%,
+                transparent 33%,
+                rgba(255, 255, 255, 0.28) 33%,
+                rgba(255, 255, 255, 0.28) calc(33% + 1.5px),
+                transparent calc(33% + 1.5px),
+                transparent 67%,
+                rgba(255, 255, 255, 0.32) 67%,
+                rgba(255, 255, 255, 0.32) calc(67% + 1.5px),
+                transparent calc(67% + 1.5px)
+            );
+    }
+}
+
+/* ============================================
+ * 顶部色条 - kaiko.ai 标志性元素
+ * ============================================ */
+
+.color-brand-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    display: flex;
+    z-index: 9999;
+    pointer-events: none;
+}
+
+.color-brand-bar span {
+    flex: 1;
+    height: 100%;
+}
+
+.color-brand-bar span:nth-child(1) { background-color: #FBF9F1; }
+.color-brand-bar span:nth-child(2) { background-color: #FBF9F1; }
+.color-brand-bar span:nth-child(3) { background-color: #FBF9F1; }
+.color-brand-bar span:nth-child(4) { background-color: #2E6CB8; }
+.color-brand-bar span:nth-child(5) { background-color: #2B5DAA; }
+.color-brand-bar span:nth-child(6) { background-color: #3C70AE; }
+.color-brand-bar span:nth-child(7) { background-color: #325E98; }
+.color-brand-bar span:nth-child(8) { background-color: #2B63AD; }
+.color-brand-bar span:nth-child(9) { background-color: #749DDB; }
+.color-brand-bar span:nth-child(10) { background-color: #3467B6; }
+.color-brand-bar span:nth-child(11) { background-color: #434C54; }
+.color-brand-bar span:nth-child(12) { background-color: #434C54; }
+
+/* 暗色模式下色条稍暗 */
+:root.dark .color-brand-bar span:nth-child(1) { background-color: #749DDB; }
+:root.dark .color-brand-bar span:nth-child(2) { background-color: #749DDB; }
+:root.dark .color-brand-bar span:nth-child(3) { background-color: #3467B6; }
+:root.dark .color-brand-bar span:nth-child(4) { background-color: #2E6CB8; }
+:root.dark .color-brand-bar span:nth-child(5) { background-color: #2B5DAA; }
+:root.dark .color-brand-bar span:nth-child(6) { background-color: #3C70AE; }
+:root.dark .color-brand-bar span:nth-child(7) { background-color: #325E98; }
+:root.dark .color-brand-bar span:nth-child(8) { background-color: #2B63AD; }
+:root.dark .color-brand-bar span:nth-child(9) { background-color: #749DDB; }
+:root.dark .color-brand-bar span:nth-child(10) { background-color: #3467B6; }
+:root.dark .color-brand-bar span:nth-child(11) { background-color: #434C54; }
+:root.dark .color-brand-bar span:nth-child(12) { background-color: #434C54; }
+
+/* ============================================
+ * 滚动条配色
+ * ============================================ */
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--brand-cream);
+}
+
+:root.dark ::-webkit-scrollbar-track {
+    background: #0F1A2E;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(46, 108, 184, 0.30);
+    border-radius: 9999px;
+    border: 2px solid var(--brand-cream);
+}
+
+:root.dark ::-webkit-scrollbar-thumb {
+    background: rgba(116, 157, 219, 0.30);
+    border-color: #0F1A2E;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(46, 108, 184, 0.55);
+}
+
+:root.dark ::-webkit-scrollbar-thumb:hover {
+    background: rgba(116, 157, 219, 0.55);
+}
+
+/* ============================================
+ * 文本对比度增强
+ * ============================================ */
+
+.text-90 { color: rgba(67, 76, 84, 0.90); }
+.text-75 { color: rgba(67, 76, 84, 0.75); }
+.text-50 { color: rgba(67, 76, 84, 0.55); }
+.text-30 { color: rgba(67, 76, 84, 0.35); }
+.text-25 { color: rgba(67, 76, 84, 0.30); }
+
+:root.dark .text-90 { color: rgba(251, 249, 241, 0.92); }
+:root.dark .text-75 { color: rgba(251, 249, 241, 0.78); }
+:root.dark .text-50 { color: rgba(251, 249, 241, 0.58); }
+:root.dark .text-30 { color: rgba(251, 249, 241, 0.38); }
+:root.dark .text-25 { color: rgba(251, 249, 241, 0.30); }
+
+/* ============================================
+ * 浮动面板适配
+ * ============================================ */
+
+.float-panel {
+    background-color: var(--card-bg);
+    border-radius: var(--radius-large);
+    box-shadow: 0 10px 40px rgba(43, 93, 170, 0.12);
+    border: 1px solid rgba(46, 108, 184, 0.08);
+}
+
+:root.dark .float-panel {
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(116, 157, 219, 0.12);
+}
+
+/* ============================================
+ * 顶部渐变高光 - 改成蓝色调
+ * ============================================ */
+
+.top-gradient-highlight {
+    background: linear-gradient(
+        to bottom,
+        rgba(251, 249, 241, 0.6) 0%,
+        rgba(251, 249, 241, 0.3) 30%,
+        transparent 100%
+    );
+}
+
+:root.dark .top-gradient-highlight {
+    background: linear-gradient(
+        to bottom,
+        rgba(15, 26, 46, 0.6) 0%,
+        rgba(15, 26, 46, 0.3) 30%,
+        transparent 100%
+    );
+}
+
+/* ============================================
+ * 导航栏半透明背景 - 在 banner 上时显示淡蓝白
+ * ============================================ */
+
+@media (min-width: 1024px) {
+    /* 半透明模式：淡蓝白色 */
+    body:has(#wallpaper-wrapper) #navbar[data-transparent-mode="semi"] > div,
+    #wallpaper-wrapper ~ * #navbar[data-transparent-mode="semi"] > div {
+        background: rgba(251, 249, 241, 0.78) !important;
+        backdrop-filter: blur(20px) saturate(180%) !important;
+        -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    }
+
+    /* 滚动后的导航栏 */
+    #navbar.navbar-sticky-shadow[data-transparent-mode="semi"] > div {
+        background: rgba(251, 249, 241, 0.95) !important;
+        backdrop-filter: blur(24px) saturate(180%) !important;
+        box-shadow: 0 2px 20px rgba(43, 93, 170, 0.08) !important;
+    }
+
+    /* 暗色模式 */
+    :root.dark body:has(#wallpaper-wrapper) #navbar[data-transparent-mode="semi"] > div,
+    :root.dark #wallpaper-wrapper ~ * #navbar[data-transparent-mode="semi"] > div {
+        background: rgba(26, 39, 66, 0.7) !important;
+    }
+}
+
+/* 顶部导航栏标题颜色 - 在 banner 上时变深 */
+body:has(#wallpaper-wrapper) #navbar[data-is-home="true"][data-transparent-mode="full"] .navbar-title,
+body:has(#wallpaper-wrapper) #navbar[data-is-home="true"][data-transparent-mode="semifull"]:not(.scrolled) .navbar-title {
+    color: #FBF9F1 !important;
+}
+
+body:has(#wallpaper-wrapper) #navbar[data-is-home="true"][data-transparent-mode="full"] .navbar-link,
+body:has(#wallpaper-wrapper) #navbar[data-is-home="true"][data-transparent-mode="semifull"]:not(.scrolled) .navbar-link {
+    color: rgba(251, 249, 241, 0.92) !important;
+}
+
+body:has(#wallpaper-wrapper) #navbar[data-is-home="true"][data-transparent-mode="full"] .navbar-icon,
+body:has(#wallpaper-wrapper) #navbar[data-is-home="true"][data-transparent-mode="semifull"]:not(.scrolled) .navbar-icon {
+    color: #FBF9F1 !important;
+}
+
+/* ============================================
+ * 分类导航条 CategoryBar - 覆盖为品牌蓝色
+ * ============================================ */
+
+/* 分类卡片背景：纯白 + 浮起阴影（已通过 .card-base 继承） */
+#category-bar {
+    background-color: #ffffff;
+    box-shadow: var(--card-shadow);
+    border: none;
+}
+
+/* 分类 pill 默认态 - 浅蓝灰 */
+.category-pill {
+    color: var(--brand-blue-deep) !important;
+    background: rgba(46, 108, 184, 0.06) !important;
+    border-radius: 9999px !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.category-pill:hover {
+    color: var(--brand-blue) !important;
+    background: rgba(46, 108, 184, 0.12) !important;
+    transform: translateY(-1px);
+}
+
+/* 计数小药丸 */
+.category-pill .pill-count {
+    color: var(--brand-blue) !important;
+    background: rgba(46, 108, 184, 0.10) !important;
+    opacity: 1 !important;
+}
+
+/* 首页图标按钮（"全部"） */
+.category-pill[data-category-name=""] {
+    color: var(--brand-blue) !important;
+    background: rgba(46, 108, 184, 0.10) !important;
+}
+
+/* 当前激活的 pill - 实色蓝底白字 */
+.category-pill[data-active] {
+    color: #FBF9F1 !important;
+    background: var(--brand-blue) !important;
+    box-shadow: 0 2px 8px rgba(46, 108, 184, 0.30);
+    font-weight: 600;
+}
+
+.category-pill[data-active] .pill-count {
+    color: #FBF9F1 !important;
+    background: rgba(251, 249, 241, 0.20) !important;
+}
+
+.category-pill[data-active]:hover {
+    background: var(--brand-blue-deep) !important;
+    opacity: 1 !important;
+}
+
+/* 软激活（在分类页但未选中具体分类） */
+.category-pill[data-soft-active] {
+    color: var(--brand-blue) !important;
+    background: rgba(46, 108, 184, 0.18) !important;
+    font-weight: 600;
+}
+
+.category-pill[data-soft-active]:hover,
+.category-pill[data-soft-active][data-active],
+.category-pill[data-soft-active][data-active]:hover {
+    background: rgba(46, 108, 184, 0.25) !important;
+    color: var(--brand-blue-deep) !important;
+}
+
+/* 分割线 */
+.category-divider {
+    background: rgba(46, 108, 184, 0.15) !important;
+    opacity: 1 !important;
+}
+
+/* 滚动渐隐 - 跟随卡片白色背景 */
+.scroll-fade-left {
+    background: linear-gradient(to left, transparent, #ffffff) !important;
+}
+.scroll-fade-right {
+    background: linear-gradient(to right, transparent, #ffffff) !important;
+}
+
+/* 暗色模式 */
+:root.dark #category-bar {
+    background-color: #1A2742;
+}
+
+:root.dark .category-pill {
+    color: var(--brand-blue-light) !important;
+    background: rgba(116, 157, 219, 0.10) !important;
+}
+
+:root.dark .category-pill:hover {
+    color: #FBF9F1 !important;
+    background: rgba(116, 157, 219, 0.18) !important;
+}
+
+:root.dark .category-pill .pill-count {
+    color: var(--brand-blue-light) !important;
+    background: rgba(116, 157, 219, 0.15) !important;
+}
+
+:root.dark .category-pill[data-category-name=""] {
+    color: var(--brand-blue-light) !important;
+    background: rgba(116, 157, 219, 0.15) !important;
+}
+
+:root.dark .category-pill[data-active] {
+    color: #FBF9F1 !important;
+    background: var(--brand-blue) !important;
+}
+
+:root.dark .category-pill[data-soft-active] {
+    color: var(--brand-blue-light) !important;
+    background: rgba(116, 157, 219, 0.20) !important;
+}
+
+:root.dark .category-divider {
+    background: rgba(116, 157, 219, 0.20) !important;
+}
+
+:root.dark .scroll-fade-left {
+    background: linear-gradient(to left, transparent, #1A2742) !important;
+}
+:root.dark .scroll-fade-right {
+    background: linear-gradient(to right, transparent, #1A2742) !important;
+}
