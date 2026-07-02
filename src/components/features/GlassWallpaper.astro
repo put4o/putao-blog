@@ -123,13 +123,27 @@ const {
 			return window.innerWidth >= 1024 ? "desktop" : "mobile";
 		}
 
+		// 生成 cols 列、足够覆盖容器高度的行数，每格为正方形
 		function render() {
 			var m = detect();
-			var n = m === "desktop" ? colsDesktop : colsMobile;
-			var html = "";
-			// Astro 作用域 CSS 匹配的是 [data-astro-cid-xxx] 属性，所以要写到 attribute 不是 class
+			var cols = m === "desktop" ? colsDesktop : colsMobile;
+			var rect = root.getBoundingClientRect();
+			if (rect.width === 0) return;
+			var colW = rect.width / cols;
+			var rows = Math.ceil(rect.height / colW);
+			var total = cols * rows;
+			root.style.setProperty("--cols", String(cols));
+			root.style.setProperty("--col-w", colW + "px");
 			var attr = astroCid ? ' ' + astroCid + '=""' : "";
-			for (var ri = 0; ri < n; ri++) html += '<div class="glass-col"' + attr + '></div>';
+			var html = "";
+			for (var i = 0; i < total; i++) {
+				var c = i % cols;
+				var r = (i / cols) | 0;
+				var edgeAttrs =
+					(c === cols - 1 ? ' data-edge-r=""' : "") +
+					(r === rows - 1 ? ' data-edge-b=""' : "");
+				html += '<div class="glass-col"' + edgeAttrs + attr + "></div>";
+			}
 			root.innerHTML = html;
 		}
 
@@ -142,7 +156,7 @@ const {
 				if (resizeTimer) clearTimeout(resizeTimer);
 				resizeTimer = setTimeout(render, 150);
 			});
-			// Swup 切页时重新生成列
+			// Swup 切页时重新生成方块
 			document.addEventListener("astro:page-load", function () {
 				var r = document.getElementById("glass-columns");
 				if (r) r.dataset.bound = "";
@@ -334,17 +348,22 @@ const {
 		}
 	}
 
-	/* ============ 6. 均匀垂直分栏 + 毛玻璃（保留原本的「百叶」质感） ============ */
+	/* ============ 6. 均匀分格（垂直 + 水平线条，正方形小方块） ============
+	   行高 = (容器宽 / cols) 撑成正方形；行数由容器高决定，
+	   变量 --col-w / --cols 在 JS 端根据容器尺寸动态注入。 */
 	.glass-columns {
 		position: absolute;
 		inset: 0;
-		display: flex;
+		display: grid;
+		grid-auto-rows: var(--col-w);
+		grid-template-columns: repeat(var(--cols), 1fr);
 		pointer-events: none;
 	}
 	.glass-col {
-		flex: 1;
 		position: relative;
 		border-right: 1px solid rgba(255, 255, 255, 0.06);
+		border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+		aspect-ratio: 1;
 		/* 毛玻璃：液态玻璃需要更强的模糊让分栏透出下面的「液体」 */
 		backdrop-filter: blur(14px) saturate(160%);
 		-webkit-backdrop-filter: blur(14px) saturate(160%);
@@ -352,8 +371,12 @@ const {
 		background: var(--glass-tint);
 		box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.05);
 	}
-	.glass-col:last-child {
+	/* 最后一列 / 最后一行去掉外侧边框，避免出现双重线 */
+	.glass-col[data-edge-r] {
 		border-right: none;
+	}
+	.glass-col[data-edge-b] {
+		border-bottom: none;
 	}
 
 	/* ============ 7. 噪点纹理 ============ */
