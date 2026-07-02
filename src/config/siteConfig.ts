@@ -104,10 +104,10 @@ export const siteConfig: SiteConfig = {
 	},
 
 	// 分类导航栏开关，在首页和归档页顶部显示分类快捷导航
-	categoryBar: true,
+	categoryBar: false,
 
 	// 归档页是否折叠非最新年份文章，禁用后默认展开全部年份
-	foldArticle: true,
+	foldArticle: false,
 
 	// 文章列表布局配置
 	postListLayout: {
