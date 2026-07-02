@@ -730,3 +730,64 @@ body:has(#wallpaper-wrapper) #navbar[data-is-home="true"][data-transparent-mode=
 :root.dark .scroll-fade-right {
     background: linear-gradient(to right, transparent, #1A2742) !important;
 }
+
+/* ============================================
+ * 导航栏链接 - 默认纯黑色，悬停变蓝
+ * ============================================ */
+
+/* 浅色主题：默认纯黑色（包含图标）*/
+:root:not(.dark) #navbar a.btn-plain,
+:root:not(.dark) #navbar button.btn-plain,
+:root:not(.dark) #navbar .dropdown-trigger {
+    color: #495D79 !important;
+}
+
+:root:not(.dark) #navbar a.btn-plain .navbar-icon,
+:root:not(.dark) #navbar button.btn-plain .navbar-icon,
+:root:not(.dark) #navbar .dropdown-trigger .navbar-icon,
+:root:not(.dark) #navbar a.btn-plain .dropdown-arrow,
+:root:not(.dark) #navbar .dropdown-trigger .dropdown-arrow {
+    color: #495D79 !important;
+}
+
+/* 浅色主题：悬停主色 + 浅蓝背景 */
+:root:not(.dark) #navbar a.btn-plain:hover,
+:root:not(.dark) #navbar button.btn-plain:hover,
+:root:not(.dark) #navbar .dropdown-trigger:hover {
+    color: var(--primary) !important;
+    background-color: rgba(46, 108, 184, 0.10) !important;
+}
+
+:root:not(.dark) #navbar a.btn-plain:hover .navbar-icon,
+:root:not(.dark) #navbar button.btn-plain:hover .navbar-icon,
+:root:not(.dark) #navbar .dropdown-trigger:hover .navbar-icon,
+:root:not(.dark) #navbar a.btn-plain:hover .dropdown-arrow,
+:root:not(.dark) #navbar .dropdown-trigger:hover .dropdown-arrow {
+    color: var(--primary) !important;
+}
+
+/* ============================================
+ * 导航栏链接 - 暗色主题增强对比度
+ * ============================================ */
+
+/* 导航栏链接文字：默认更亮的米白色 */
+:root.dark #navbar a.btn-plain,
+:root.dark #navbar button.btn-plain,
+:root.dark #navbar .dropdown-trigger {
+    color: rgba(251, 249, 241, 0.92) !important;
+}
+
+/* 导航栏链接悬停：使用品牌米白色 + 更明显的蓝色背景 */
+:root.dark #navbar a.btn-plain:hover,
+:root.dark #navbar button.btn-plain:hover,
+:root.dark #navbar .dropdown-trigger:hover {
+    color: #FBF9F1 !important;
+    background-color: rgba(116, 157, 219, 0.18) !important;
+}
+
+/* 导航栏链接激活 */
+:root.dark #navbar a.btn-plain:active,
+:root.dark #navbar button.btn-plain:active,
+:root.dark #navbar .dropdown-trigger:active {
+    background-color: rgba(116, 157, 219, 0.28) !important;
+}

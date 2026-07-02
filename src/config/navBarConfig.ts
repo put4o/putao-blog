@@ -16,28 +16,26 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 		LinkPresets.Home,
 	];
 
-	// 文章及其子菜单
+	// 归档
 	links.push({
-		name: "文章",
-		url: "#",
-		icon: "material-symbols:article",
-		children: [
-			// 归档
-			LinkPresets.Archive,
-
-			// 分类
-			LinkPresets.Categories,
-
-			// 标签
-			LinkPresets.Tags,
-		],
+		name: "归档",
+		url: "/archive/",
+		icon: "material-symbols:archive",
 	});
 
-	// 友链
-	// links.push(LinkPresets.Friends);
+	// 分类
+	links.push({
+		name: "分类",
+		url: "/categories/",
+		icon: "material-symbols:folder-open-rounded",
+	});
 
-	// 留言板
-	links.push(LinkPresets.Guestbook);
+	// 标签
+	links.push({
+		name: "标签",
+		url: "/tags/",
+		icon: "material-symbols:tag-rounded",
+	});
 
 	// 我的及其子菜单
 	// links.push({
@@ -56,53 +54,8 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 	// 	],
 	// });
 
-	// 关于及其子菜单
-	links.push({
-		name: "关于",
-		url: "#",
-		icon: "material-symbols:info",
-		children: [
-			// 打赏
-			LinkPresets.Sponsor,
-
-			// 关于页面
-			LinkPresets.About,
-		],
-	});
-
-	// 自定义导航栏链接
-	links.push({
-		name: "链接",
-		url: "#",
-		icon: "material-symbols:link",
-		// 子菜单
-		children: [
-			{
-				name: "GitHub",
-				url: "https://github.com/CuteLeaf/Firefly",
-				external: true,
-				icon: "fa7-brands:github",
-			},
-			{
-				name: "Gitee",
-				url: "https://gitee.com/CuteLeaf/Firefly",
-				external: true,
-				icon: "fa7-brands:gitee",
-			},
-			{
-				name: "QQ交流群",
-				url: "https://qm.qq.com/q/ZGsFa8qX2G",
-				external: true,
-				icon: "fa7-brands:qq",
-			},
-			{
-				name: "Firefly文档",
-				url: "https://docs-firefly.cuteleaf.cn",
-				external: true,
-				icon: "material-symbols:docs",
-			},
-		],
-	});
+	// 关于
+	links.push(LinkPresets.About);
 
 	// 文档链接
 	// links.push({
