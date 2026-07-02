@@ -2,11 +2,11 @@
 import type { CollectionEntry } from "astro:content";
 import { render } from "astro:content";
 import { Icon } from "astro-icon/components";
-import PostMetadata from "@/components/layout/PostMeta.astro";
 import { siteConfig } from "@/config";
 import I18nKey from "@/i18n/i18nKey";
 import { i18n } from "@/i18n/translation";
-import { getTagUrl } from "@/utils/url-utils";
+import { getCategoryUrl, getTagUrl } from "@/utils/url-utils";
+import { formatDateToYYYYMMDD } from "@/utils/date-utils";
 
 interface Props {
 	class?: string;
@@ -65,36 +65,36 @@ const descriptionText = description || remarkPluginFrontmatter.excerpt || "";
       "w-full",
     ]}
   >
-    <a
-      href={url}
-      class="post-card-title transition group w-full block font-bold mb-3 text-3xl text-90
-        hover:text-(--primary) dark:hover:text-(--primary)
-        active:text-(--title-active) dark:active:text-(--title-active)
-        before:w-1 before:h-5 before:rounded-md before:bg-(--primary)
-        before:absolute before:top-[35px] before:left-[18px] before:hidden md:before:block"
-    >
-      {title}
+    <div class="flex items-start gap-3">
+      <a
+        href={url}
+        class="post-card-title transition group flex-1 font-bold text-3xl text-90
+          hover:text-(--primary) dark:hover:text-(--primary)
+          active:text-(--title-active) dark:active:text-(--title-active)
+          before:w-1 before:h-5 before:rounded-md before:bg-(--primary)
+          before:absolute before:top-[35px] before:left-[18px] before:hidden md:before:block"
+      >
+        {title}
 
-      {
-        password && (
-          <Icon
-            is:inline
-            name="material-symbols:lock-outline"
-            class="inline text-2xl align-middle -translate-y-px"
-          />
-        )
-      }
-    </a>
+        {
+          password && (
+            <Icon
+              is:inline
+              name="material-symbols:lock-outline"
+              class="inline text-2xl align-middle -translate-y-px"
+            />
+          )
+        }
+      </a>
 
-    <PostMetadata
-      published={published}
-      tags={tags}
-      showTags={false}
-      category={category || undefined}
-      pinned={pinned}
-      password={password}
-      className="mb-4 post-meta"
-    />
+      {pinned && (
+        <Icon
+          is:inline
+          name="material-symbols:push-pin-outline"
+          class="text-xl text-gray-400 dark:text-gray-500 shrink-0"
+        />
+      )}
+    </div>
 
     <div
       class:list={[
@@ -106,26 +106,48 @@ const descriptionText = description || remarkPluginFrontmatter.excerpt || "";
       {descriptionText}
     </div>
 
-    <!-- tags -->
+    <!-- category + tags + date -->
     {
       showTags && (
-        <div class="text-sm text-black/30 dark:text-white/30 flex flex-wrap gap-2 transition stats pt-3">
-          {tags &&
-            tags.length > 0 &&
-            tags.map((tag, _i) => (
+        <div class="flex flex-wrap items-center justify-between gap-2 transition stats pt-3">
+          <div class="flex flex-wrap items-center gap-2">
+            <!-- category -->
+            {category && (
+              <>
                 <a
-                  href={getTagUrl(tag)}
-                  aria-label={`View all posts with the ${tag.trim()} tag`}
-                  class="text-xs text-gray-400 dark:text-gray-500 transition-colors duration-200 hover:text-blue-500 ml-2 first:ml-0"
+                  href={getCategoryUrl(category)}
+                  aria-label={`View all posts in the ${category} category`}
+                  class="text-xs text-gray-400 dark:text-gray-500 transition-colors duration-200 hover:text-blue-500"
                 >
-                  #{tag.trim()}
+                  {category}
                 </a>
-            ))}
-          {!(tags && tags.length > 0) && (
-            <span class="text-(--content-meta) text-xs">
-              #{i18n(I18nKey.noTags)}
-            </span>
-          )}
+                <span class="text-gray-300 dark:text-gray-600 select-none">|</span>
+              </>
+            )}
+            {!(tags && tags.length > 0) && !category && (
+              <span class="text-(--content-meta) text-xs">
+                #{i18n(I18nKey.noTags)}
+              </span>
+            )}
+            <!-- tags -->
+            {tags && tags.length > 0 && (
+              <div class="flex flex-wrap items-center gap-1">
+                {tags.map((tag) => (
+                  <a
+                    href={getTagUrl(tag)}
+                    aria-label={`View all posts with the ${tag.trim()} tag`}
+                    class="text-xs text-gray-400 dark:text-gray-500 transition-colors duration-200 hover:text-blue-500 ml-2 first:ml-0"
+                  >
+                    #{tag.trim()}
+                  </a>
+                ))}
+              </div>
+            )}
+          </div>
+          <!-- date on the right -->
+          <span class="text-xs text-gray-400 dark:text-gray-500 whitespace-nowrap shrink-0">
+            {formatDateToYYYYMMDD(published)}
+          </span>
         </div>
       )
     }
@@ -141,18 +163,15 @@ const descriptionText = description || remarkPluginFrontmatter.excerpt || "";
     line-clamp: var(--descriptionClampLines);
   }
 
+  :global(.post-card-title) {
+    margin-bottom: 0 !important;
+  }
+
   /* 默认（无 layout class 时的刷新状态） */
   .stats {
     display: flex !important;
-    flex-wrap: nowrap !important;
+    flex-wrap: wrap !important;
     gap: 0.5rem !important;
-    overflow-x: auto;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-
-  .stats::-webkit-scrollbar {
-    display: none;
   }
 
   .stats a {
@@ -173,7 +192,7 @@ const descriptionText = description || remarkPluginFrontmatter.excerpt || "";
   :global(.list-mode) .post-card-title {
     font-size: 1.125rem !important;
     line-height: 1.75rem !important;
-    margin-bottom: 0.5rem !important;
+    margin-bottom: 0 !important;
   }
 
   :global(.list-mode) .post-card-title::before {

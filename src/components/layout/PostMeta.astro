@@ -22,6 +22,8 @@ export interface Props {
 	customPath?: string;
 	pinned?: boolean;
 	password?: boolean;
+	hideCategory?: boolean;
+	hideDate?: boolean;
 }
 
 const {
@@ -37,6 +39,8 @@ const {
 	showTags = true,
 	customPath,
 	pinned,
+	hideCategory,
+	hideDate,
 } = Astro.props;
 
 const path = customPath || (id ? `/posts/${id}` : "");
@@ -48,17 +52,8 @@ const path = customPath || (id ? `/posts/${id}` : "");
     className,
   ]}
 >
-  <!-- pinned -->
-  {
-    pinned && (
-      <div class="pinned-btn flex items-center gap-1 bg-(--btn-regular-bg) text-(--btn-content) rounded-md px-2 py-1.5 font-bold">
-        <Icon is:inline name="material-symbols:pinboard" class="text-xl" />
-        <span class="text-sm">{i18n(I18nKey.pinned)}</span>
-      </div>
-    )
-  }
-
   <!-- publish date -->
+  { !hideDate && (
   <div class="flex items-center">
     <div class="meta-icon">
       <Icon is:inline
@@ -70,6 +65,7 @@ const path = customPath || (id ? `/posts/${id}` : "");
       >{formatDateToYYYYMMDD(published)}</span
     >
   </div>
+  )}
 
   <!-- update date -->
   {
@@ -89,6 +85,7 @@ const path = customPath || (id ? `/posts/${id}` : "");
   }
 
   <!-- categories -->
+  { !hideCategory && (
   <div class="flex items-center">
     <div class="meta-icon">
       <Icon is:inline name="material-symbols:book-2-outline-rounded" class="text-xl" />
@@ -104,6 +101,7 @@ const path = customPath || (id ? `/posts/${id}` : "");
       </a>
     </div>
   </div>
+  )}
 
    <!-- tags -->
    {
