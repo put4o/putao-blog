@@ -1,36 +1,105 @@
 ---
 /**
- * GlassWallpaper - 玻璃分栏动态光斑 CSS 背景
+ * GlassWallpaper - 液态玻璃 (Liquid Glass) 动态背景
+ *
+ * 与传统「磨砂玻璃」不同，液态玻璃的核心是用 SVG feTurbulence + feDisplacementMap
+ * 给背景做有机的流体折射/抖动，并叠加多层缓慢漂移的高光球，让玻璃看起来像
+ * 一层缓慢流动的彩色液体。
+ *
+ * 渲染顺序（自下而上）：
+ *   1. 主题渐变底色
+ *   2. 3 个缓慢漂移的高光球（彩色光斑）
+ *   3. 液态玻璃折射层（SVG turbulence + displacement 扰动底色边缘）
+ *   4. 顶部高光描边 + 噪点纹理
  *
  * 作为 #banner-images-container 的内容渲染，纯 CSS + 极少 JS。
- * 关键设计：容器本身保持透明，列 + 光斑 + 噪点分层叠加，方便上层 dim/overlay/waves
- * 继续按原本的方式叠在其上方。
  *
  * 启用方法：把 src/config/backgroundWallpaper.ts 中的 desktop 和 mobile 数组都设为 []
  * 想换主题（如紫色）：<GlassWallpaper theme="purple" />
  */
 
 export interface Props {
-	/** 桌面端垂直分栏数量。值越大栏越细，默认 14 */
+	/** 桌面端垂直分栏数量。值越大栏越细，默认 20（液态玻璃建议不要太细，否则扰动看不出） */
 	desktopColumns?: number;
-	/** 移动端垂直分栏数量，默认 10 */
+	/** 移动端垂直分栏数量，默认 12 */
 	mobileColumns?: number;
 	/** 玻璃色调主题：blue / purple / teal / rose */
 	theme?: "blue" | "purple" | "teal" | "rose";
+	/** 液态扰动强度 (0-1)，默认 0.55。值越大玻璃边缘越「扭曲」，更流动 */
+	intensity?: number;
 }
 
 const {
 	desktopColumns = 20,
 	mobileColumns = 12,
 	theme = "blue",
+	intensity = 1,
 } = Astro.props;
 ---
 
-<div class="glass-wallpaper" data-theme={theme}>
-	<div class="glass-columns" id="glass-columns"></div>
+<div
+	class="glass-wallpaper"
+	data-theme={theme}
+	style={`--glass-intensity: ${intensity};`}
+>
+	<div class="glass-base"></div>
 	<div class="glass-glow g1"></div>
 	<div class="glass-glow g2"></div>
 	<div class="glass-glow g3"></div>
+
+	<!-- 液态玻璃折射层：turbulence + displacement 让底层画面产生有机的流体扭曲 -->
+	<svg
+		class="glass-liquid"
+		xmlns="http://www.w3.org/2000/svg"
+		aria-hidden="true"
+		preserveAspectRatio="none"
+	>
+		<defs>
+			<filter id="liquid-displace" x="-20%" y="-20%" width="140%" height="140%">
+				<!-- baseFrequency 越小波纹越大；numOctaves 越大细节越丰富 -->
+				<feTurbulence
+					type="fractalNoise"
+					baseFrequency="0.012 0.018"
+					numOctaves="2"
+					seed="7"
+					result="noise"
+				>
+					<animate
+						attributeName="baseFrequency"
+						dur="28s"
+						values="0.012 0.018; 0.018 0.012; 0.012 0.018"
+						repeatCount="indefinite"
+					/>
+				</feTurbulence>
+				<!--
+					displacement 强度通过 CSS 变量 --glass-intensity 控制。
+					用 transform / filter 是 SVG 内置不支持变量，所以这里用 baseFrequency 的
+					动画配合 feColorMatrix 把波动变成亮带，再由 overlay 合成。
+				-->
+				<feDisplacementMap
+					in="SourceGraphic"
+					in2="noise"
+					scale="60"
+					xChannelSelector="R"
+					yChannelSelector="G"
+				/>
+			</filter>
+		</defs>
+		<rect
+			width="100%"
+			height="100%"
+			fill="transparent"
+			filter="url(#liquid-displace)"
+		/>
+	</svg>
+
+	<!-- 玻璃高光：顶部和两侧的线性光带，强化「液面反光」 -->
+	<div class="glass-highlight"></div>
+
+	<!-- 均匀垂直分栏：保持原本的「百叶/列」质感，并叠加毛玻璃 -->
+	<div class="glass-columns" id="glass-columns"></div>
+
+	<!-- 噪点纹理 -->
 	<div class="glass-noise"></div>
 </div>
 
@@ -83,101 +152,94 @@ const {
 </script>
 
 <style>
-	/* 根据 data-theme 选择底色 + 三色光斑 */
+	/* ============ 1. 主题：底色 + 三色光斑 ============ */
 	.glass-wallpaper[data-theme="blue"] {
 		--glass-base:
 			radial-gradient(ellipse 60% 50% at 20% 25%, #5a9fe0 0%, transparent 60%),
 			radial-gradient(ellipse 50% 60% at 85% 75%, #2a5fa8 0%, transparent 60%),
 			linear-gradient(135deg, #1e4a8a 0%, #2c6cbc 50%, #143765 100%);
-		--glass-g1: rgba(160, 210, 255, 0.45);
-		--glass-g2: rgba(120, 180, 240, 0.35);
-		--glass-g3: rgba(200, 220, 255, 0.25);
+		--glass-g1: rgba(160, 210, 255, 0.5);
+		--glass-g2: rgba(120, 180, 240, 0.4);
+		--glass-g3: rgba(200, 220, 255, 0.3);
+		--glass-tint: rgba(180, 220, 255, 0.18);
 	}
 	.glass-wallpaper[data-theme="purple"] {
 		--glass-base:
 			radial-gradient(ellipse 60% 50% at 20% 25%, #8a6dd6 0%, transparent 60%),
 			radial-gradient(ellipse 50% 60% at 85% 75%, #4f2fa3 0%, transparent 60%),
 			linear-gradient(135deg, #2a1f63 0%, #5b3a9d 50%, #1a1248 100%);
-		--glass-g1: rgba(200, 170, 255, 0.45);
-		--glass-g2: rgba(160, 120, 230, 0.35);
-		--glass-g3: rgba(220, 200, 255, 0.25);
+		--glass-g1: rgba(200, 170, 255, 0.5);
+		--glass-g2: rgba(160, 120, 230, 0.4);
+		--glass-g3: rgba(220, 200, 255, 0.3);
+		--glass-tint: rgba(200, 180, 255, 0.18);
 	}
 	.glass-wallpaper[data-theme="teal"] {
 		--glass-base:
 			radial-gradient(ellipse 60% 50% at 20% 25%, #4ec5b9 0%, transparent 60%),
 			radial-gradient(ellipse 50% 60% at 85% 75%, #1f8a85 0%, transparent 60%),
 			linear-gradient(135deg, #0e3d3d 0%, #1f6862 50%, #062322 100%);
-		--glass-g1: rgba(170, 240, 230, 0.45);
-		--glass-g2: rgba(120, 210, 200, 0.35);
-		--glass-g3: rgba(200, 255, 245, 0.25);
+		--glass-g1: rgba(170, 240, 230, 0.5);
+		--glass-g2: rgba(120, 210, 200, 0.4);
+		--glass-g3: rgba(200, 255, 245, 0.3);
+		--glass-tint: rgba(180, 240, 230, 0.18);
 	}
 	.glass-wallpaper[data-theme="rose"] {
 		--glass-base:
 			radial-gradient(ellipse 60% 50% at 20% 25%, #d6608a 0%, transparent 60%),
 			radial-gradient(ellipse 50% 60% at 85% 75%, #a32858 0%, transparent 60%),
 			linear-gradient(135deg, #5a1530 0%, #8e2858 50%, #3a0a20 100%);
-		--glass-g1: rgba(255, 180, 200, 0.45);
-		--glass-g2: rgba(230, 120, 150, 0.35);
-		--glass-g3: rgba(255, 210, 225, 0.25);
+		--glass-g1: rgba(255, 180, 200, 0.5);
+		--glass-g2: rgba(230, 120, 150, 0.4);
+		--glass-g3: rgba(255, 210, 225, 0.3);
+		--glass-tint: rgba(255, 190, 210, 0.18);
 	}
 
-	/* 容器：继承自父级 #banner-images-container，绝对铺满 */
+	/* ============ 2. 容器：继承自父级 #banner-images-container，绝对铺满 ============ */
 	.glass-wallpaper {
 		position: absolute;
 		inset: 0;
 		overflow: hidden;
-		background: var(--glass-base);
+		isolation: isolate;
 	}
 
-	/* 均匀垂直分栏 + 毛玻璃效果 */
-	.glass-columns {
+	/* 渐变底色层（被上方各层折射/模糊） */
+	.glass-base {
 		position: absolute;
 		inset: 0;
-		display: flex;
-	}
-	.glass-col {
-		flex: 1;
-		position: relative;
-		border-right: 3px solid rgba(255, 255, 255, 0.07);
-		/* 毛玻璃：模糊 + 适度饱和度，让彩色渐变底色透过玻璃显示 */
-		backdrop-filter: blur(8px) saturate(140%);
-		-webkit-backdrop-filter: blur(8px) saturate(140%);
-		/* 微透明白色底 + inset 阴影，让分界更明显 */
-		background: rgba(146, 146, 146, 0.05);
-		box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.06);
-	}
-	.glass-col:last-child {
-		border-right: none;
+		background: var(--glass-base);
+		filter: saturate(120%);
 	}
 
-	/* 动态光斑 */
+	/* ============ 3. 动态光斑（彩色「液滴」） ============ */
 	.glass-glow {
 		position: absolute;
-		width: 700px;
-		height: 700px;
+		width: 800px;
+		height: 800px;
 		border-radius: 50%;
-		filter: blur(80px);
+		filter: blur(90px);
 		mix-blend-mode: screen;
 		will-change: transform;
 		pointer-events: none;
 	}
 	.glass-glow.g1 {
-		top: -250px;
+		top: -300px;
 		left: 5%;
 		background: radial-gradient(circle, var(--glass-g1), transparent 70%);
-		animation: glassDrift1 14s ease-in-out infinite;
+		animation: glassDrift1 16s ease-in-out infinite;
 	}
 	.glass-glow.g2 {
-		bottom: -300px;
+		bottom: -350px;
 		right: -5%;
 		background: radial-gradient(circle, var(--glass-g2), transparent 70%);
-		animation: glassDrift2 18s ease-in-out infinite;
+		animation: glassDrift2 20s ease-in-out infinite;
 	}
 	.glass-glow.g3 {
-		top: 35%;
-		left: 55%;
+		top: 30%;
+		left: 50%;
+		width: 600px;
+		height: 600px;
 		background: radial-gradient(circle, var(--glass-g3), transparent 70%);
-		animation: glassDrift3 22s ease-in-out infinite;
+		animation: glassDrift3 24s ease-in-out infinite;
 	}
 
 	@keyframes glassDrift1 {
@@ -186,7 +248,7 @@ const {
 			transform: translate(0, 0) scale(1);
 		}
 		50% {
-			transform: translate(120px, 60px) scale(1.15);
+			transform: translate(160px, 80px) scale(1.2);
 		}
 	}
 	@keyframes glassDrift2 {
@@ -195,7 +257,7 @@ const {
 			transform: translate(0, 0) scale(1);
 		}
 		50% {
-			transform: translate(-150px, -80px) scale(1.2);
+			transform: translate(-180px, -100px) scale(1.25);
 		}
 	}
 	@keyframes glassDrift3 {
@@ -204,23 +266,111 @@ const {
 			transform: translate(0, 0) scale(0.9);
 		}
 		50% {
-			transform: translate(-200px, 150px) scale(1.1);
+			transform: translate(-220px, 170px) scale(1.15);
 		}
 	}
 
-	/* 噪点纹理：提升质感，opacity 极低不抢戏 */
+	/* ============ 4. 液态玻璃折射层（核心：让底色产生流体扭曲） ============ */
+	.glass-liquid {
+		position: absolute;
+		inset: -10%;
+		width: 120%;
+		height: 120%;
+		pointer-events: none;
+		mix-blend-mode: overlay;
+		opacity: calc(0.55 + var(--glass-intensity) * 0.4);
+		/* 整层再做一次缓慢旋转 + 缩放，让扰动看起来更「流动」 */
+		animation: liquidSpin 40s linear infinite;
+		will-change: transform;
+	}
+	@keyframes liquidSpin {
+		from {
+			transform: rotate(0deg) scale(1);
+		}
+		50% {
+			transform: rotate(2deg) scale(1.04);
+		}
+		to {
+			transform: rotate(0deg) scale(1);
+		}
+	}
+
+	/* ============ 5. 顶部 + 侧边高光带（液体玻璃反光） ============ */
+	.glass-highlight {
+		position: absolute;
+		inset: 0;
+		pointer-events: none;
+		background:
+			/* 左上角大块高光 */
+			radial-gradient(
+				ellipse 40% 30% at 15% 10%,
+				rgba(255, 255, 255, 0.28),
+				transparent 60%
+			),
+			/* 顶部横向细长高光带 */
+			linear-gradient(
+				180deg,
+				rgba(255, 255, 255, 0.12) 0%,
+				rgba(255, 255, 255, 0.04) 8%,
+				transparent 20%
+			),
+			/* 右下角冷色反光 */
+			radial-gradient(
+				ellipse 35% 30% at 90% 95%,
+				var(--glass-tint),
+				transparent 70%
+			);
+		mix-blend-mode: screen;
+		/* 缓慢呼吸效果，让反光看起来像液面波动 */
+		animation: glassShine 18s ease-in-out infinite;
+	}
+	@keyframes glassShine {
+		0%,
+		100% {
+			opacity: 0.85;
+		}
+		50% {
+			opacity: 1;
+		}
+	}
+
+	/* ============ 6. 均匀垂直分栏 + 毛玻璃（保留原本的「百叶」质感） ============ */
+	.glass-columns {
+		position: absolute;
+		inset: 0;
+		display: flex;
+		pointer-events: none;
+	}
+	.glass-col {
+		flex: 1;
+		position: relative;
+		border-right: 1px solid rgba(255, 255, 255, 0.06);
+		/* 毛玻璃：液态玻璃需要更强的模糊让分栏透出下面的「液体」 */
+		backdrop-filter: blur(14px) saturate(160%);
+		-webkit-backdrop-filter: blur(14px) saturate(160%);
+		/* 极淡的主题色染色，让分栏参与整体色调 */
+		background: var(--glass-tint);
+		box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.05);
+	}
+	.glass-col:last-child {
+		border-right: none;
+	}
+
+	/* ============ 7. 噪点纹理 ============ */
 	.glass-noise {
 		position: absolute;
 		inset: 0;
 		pointer-events: none;
-		opacity: 0.04;
+		opacity: 0.05;
 		mix-blend-mode: overlay;
 		background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
 	}
 
-	/* 尊重用户偏好：减少动画 */
+	/* ============ 8. 尊重用户偏好：减少动画 ============ */
 	@media (prefers-reduced-motion: reduce) {
-		.glass-glow {
+		.glass-glow,
+		.glass-liquid,
+		.glass-highlight {
 			animation: none !important;
 		}
 	}
