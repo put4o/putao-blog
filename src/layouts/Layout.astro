@@ -1490,6 +1490,21 @@ function disableAnimation() {
     const mainGrid = document.getElementById("main-grid");
     if (!mainGrid) return;
 
+    // 全局开关关闭时，SSR 已经渲染了 grid-cols-1，不要再覆盖为多列布局，
+    // 否则会预留不存在的侧边栏列宽，导致内容被挤压。
+    if (mainGrid.getAttribute("data-sidebar-enabled") === "false") {
+      const sidebarLayoutClasses = [
+        "grid-cols-1",
+        "md:grid-cols-[17.5rem_1fr]",
+        "md:grid-cols-[1fr_17.5rem]",
+        "xl:grid-cols-[17.5rem_1fr_17.5rem]",
+        "md:grid-cols-[17.5rem_1fr_17.5rem]",
+      ];
+      sidebarLayoutClasses.forEach((cls) => mainGrid.classList.remove(cls));
+      mainGrid.classList.add("grid-cols-1");
+      return;
+    }
+
     const isPostPage = isCurrentPagePost();
     const sidebarPosition = mainGrid.getAttribute("data-sidebar-position") || "left";
     const tabletSidebar = mainGrid.getAttribute("data-tablet-sidebar") || "left";

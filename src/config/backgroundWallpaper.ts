@@ -40,14 +40,14 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 	 * ],
 	 */
 	src: {
-	// 桌面背景图片（支持单张或多张随机）
-	// 留空数组 [] → 启用「玻璃分栏」CSS 背景：均匀垂直分栏 + 动态光斑 + 渐变底色，无图片资源
-	// desktop: "assets/images/DesktopWallpaper/d1.avif",
-	desktop: [],
-	// 移动背景图片（支持单张或多张随机）
-	// 同样留空可独立启用移动端玻璃背景；桌面和移动可分别设置
-	// mobile: "assets/images/MobileWallpaper/m1.avif",
-	mobile: [],
+		// 桌面背景图片（支持单张或多张随机）
+		// 留空数组 [] → 启用「玻璃分栏」CSS 背景：均匀垂直分栏 + 动态光斑 + 渐变底色，无图片资源
+		// desktop: "assets/images/DesktopWallpaper/d1.avif",
+		desktop: [],
+		// 移动背景图片（支持单张或多张随机）
+		// 同样留空可独立启用移动端玻璃背景；桌面和移动可分别设置
+		// mobile: "assets/images/MobileWallpaper/m1.avif",
+		mobile: [],
 		// 背景视频播放地址
 		// 支持单个视频路径（字符串）或多个视频循环（数组）
 		// 支持远程视频URL，本地视频请放在 public/assets/videos/ 目录下

@@ -5,7 +5,7 @@ import type { SidebarLayoutConfig } from "../types/sidebarConfig";
  */
 export const sidebarLayoutConfig: SidebarLayoutConfig = {
 	// 是否启用侧边栏功能
-	enable: true,
+	enable: false,
 
 	// 侧边栏位置：
 	// left: 仅显示左侧边栏
@@ -106,7 +106,7 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 			// 组件位置
 			position: "top",
 			// 是否在文章详情页显示
-			showOnPostPage: true,
+			showOnPostPage: false,
 		},
 		{
 			// 组件类型：站点信息组件

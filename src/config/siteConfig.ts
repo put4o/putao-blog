@@ -15,16 +15,10 @@ export const siteConfig: SiteConfig = {
 	site_url: "https://putao.ink",
 
 	// 站点描述
-	description:
-		"葡萄的个人博客。记录一些学习、生活、工作中的点点滴滴。",
+	description: "葡萄的个人博客。记录一些学习、生活、工作中的点点滴滴。",
 
 	// 站点关键词
-	keywords: [
-		"博客",
-		"学习",
-		"生活",
-		"工作",
-	],
+	keywords: ["博客", "学习", "生活", "工作"],
 
 	// 主题色
 	themeColor: {
@@ -39,7 +33,7 @@ export const siteConfig: SiteConfig = {
 	// 页面整体宽度（单位：rem）
 	// 数值越大可以让页面内容区域更宽
 	// 在使用单侧栏边栏时，建议调低一些宽度以获得更好的视觉效果。
-	pageWidth: 70,
+	pageWidth: 65,
 
 	// 网站Card样式配置
 	card: {
