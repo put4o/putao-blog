@@ -791,3 +791,76 @@ body:has(#wallpaper-wrapper) #navbar[data-is-home="true"][data-transparent-mode=
 :root.dark #navbar .dropdown-trigger:active {
     background-color: rgba(116, 157, 219, 0.28) !important;
 }
+
+/* ============================================
+ * 博客卡片标题前小竖线颜色 - 全局样式（避免 Swup 切页时 scoped 样式失效）
+ * ============================================ */
+.post-card-title::before {
+    background-color: #FF7126 !important;
+}
+
+:root.dark .post-card-title::before {
+    background-color: #FF8A4A !important;
+}
+
+/* ============================================
+ * 归档面板时间线小圆圈颜色（与标题小竖线保持一致）
+ * ============================================ */
+.h-3.w-3.rounded-full.outline-3 {
+    outline-color: #FF7126 !important;
+}
+
+:root.dark .h-3.w-3.rounded-full.outline-3 {
+    outline-color: #FF8A4A !important;
+}
+
+/* ============================================
+ * 归档面板时间线圆点颜色（与标题小竖线保持一致）
+ * ============================================ */
+
+/* 默认态（未 hover 时） - 1×1 小圆点也变橙，且去掉外圈 outline */
+.archive-dot {
+    background-color: #FF7126 !important;
+    outline-color: transparent !important;
+}
+
+:root.dark .archive-dot {
+    background-color: #FF8A4A !important;
+    outline-color: transparent !important;
+}
+
+/* hover 整行时保持橙色（覆盖 .archive-dot 的 group-hover:bg-(--primary) 蓝） */
+a.group:hover .archive-dot,
+.group.btn-plain:hover .archive-dot {
+    background-color: #FF7126 !important;
+    outline-color: transparent !important;
+}
+
+:root.dark a.group:hover .archive-dot,
+:root.dark .group.btn-plain:hover .archive-dot {
+    background-color: #FF8A4A !important;
+    outline-color: transparent !important;
+}
+
+/* ============================================
+ * 标题装饰小竖条统一橙色（侧边栏 widget 标题、文章详情页标题）
+ * 覆盖默认的 before:bg-(--primary) 蓝色
+ * ============================================ */
+
+/* 侧边栏 widget 标题前的竖条（WidgetLayout.astro） */
+.widget-title::before {
+    background-color: #FF7126 !important;
+}
+
+:root.dark .widget-title::before {
+    background-color: #FF8A4A !important;
+}
+
+/* 文章详情页标题前的竖条（[...slug].astro） */
+[data-pagefind-meta="title"]::before {
+    background-color: #FF7126 !important;
+}
+
+:root.dark [data-pagefind-meta="title"]::before {
+    background-color: #FF8A4A !important;
+}

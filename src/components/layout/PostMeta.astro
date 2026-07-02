@@ -55,12 +55,7 @@ const path = customPath || (id ? `/posts/${id}` : "");
   <!-- publish date -->
   { !hideDate && (
   <div class="flex items-center">
-    <div class="meta-icon">
-      <Icon is:inline
-        name="material-symbols:calendar-today-outline-rounded"
-        class="text-xl"
-      />
-    </div>
+    <span class="meta-label text-50 text-sm font-medium">{i18n(I18nKey.metaDateLabel)}：</span>
     <span class="text-50 text-sm font-medium"
       >{formatDateToYYYYMMDD(published)}</span
     >
@@ -87,9 +82,7 @@ const path = customPath || (id ? `/posts/${id}` : "");
   <!-- categories -->
   { !hideCategory && (
   <div class="flex items-center">
-    <div class="meta-icon">
-      <Icon is:inline name="material-symbols:book-2-outline-rounded" class="text-xl" />
-    </div>
+    <span class="meta-label text-50 text-sm font-medium">{i18n(I18nKey.metaCategoryLabel)}：</span>
     <div class="flex flex-row flex-nowrap items-center">
       <a
         href={getCategoryUrl(category || "")}
@@ -107,9 +100,7 @@ const path = customPath || (id ? `/posts/${id}` : "");
    {
      showTags && (
        <div class:list={["items-center", {"flex": !hideTagsForMobile, "hidden md:flex": hideTagsForMobile}]}>
-         <div class="meta-icon">
-           <Icon is:inline name="material-symbols:tag-rounded" class="text-xl" />
-         </div>
+         <span class="meta-label text-50 text-sm font-medium">{i18n(I18nKey.metaTagLabel)}：</span>
          <div class="flex flex-row flex-nowrap items-center">
            {(tags && tags.length > 0) && tags.map((tag, i) => (
              <div class:list={[{"hidden": i == 0}, "mx-1.5 text-(--meta-divider) text-sm"]}>/</div>
