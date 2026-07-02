@@ -5,19 +5,30 @@
 
 :root {
     /* 核心色板 - 直接使用品牌指定色值 */
-    --brand-cream: #FBF9F1;          /* 米白底色 */
-    --brand-blue: #2E6CB8;           /* 主蓝 */
-    --brand-blue-deep: #2B5DAA;      /* 深蓝 */
-    --brand-blue-mid: #3C70AE;       /* 中蓝 */
-    --brand-blue-darker: #325E98;    /* 更深蓝 */
-    --brand-blue-alt: #2B63AD;       /* 主蓝变体 */
-    --brand-blue-strong: #3467B6;    /* 强调蓝 */
-    --brand-blue-light: #749DDB;     /* 浅蓝点缀 */
-    --brand-charcoal: #434C54;       /* 深炭灰文字 */
+    --brand-cream: #FBF9F1;
+    /* 米白底色 */
+    --brand-blue: #2E6CB8;
+    /* 主蓝 */
+    --brand-blue-deep: #2B5DAA;
+    /* 深蓝 */
+    --brand-blue-mid: #3C70AE;
+    /* 中蓝 */
+    --brand-blue-darker: #325E98;
+    /* 更深蓝 */
+    --brand-blue-alt: #2B63AD;
+    /* 主蓝变体 */
+    --brand-blue-strong: #3467B6;
+    /* 强调蓝 */
+    --brand-blue-light: #749DDB;
+    /* 浅蓝点缀 */
+    --brand-charcoal: #325E98;
+    /* 深炭灰文字 */
 
     /* 覆盖 oklch 默认变量 - 浅色模式 */
-    --page-bg: #FBF9F1;              /* 米白底色 */
-    --card-bg: #ffffff;              /* 卡片白色 */
+    --page-bg: #FBF9F1;
+    /* 米白底色 */
+    --card-bg: #ffffff;
+    /* 卡片白色 */
     --card-bg-transparent: rgba(251, 249, 241, 0.85);
     --card-transparent-opacity: 0.85;
 
@@ -57,15 +68,13 @@
 
     /* 卡片阴影 - 浮起感 */
     --card-shadow: 0 1px 3px rgba(43, 93, 170, 0.04),
-                   0 8px 24px rgba(43, 93, 170, 0.08);
+        0 8px 24px rgba(43, 93, 170, 0.08);
 
     /* 渐变效果 - 蓝色色卡 */
-    --color-selection-bar: linear-gradient(
-        to right,
-        #FBF9F1, #FBF9F1, #FBF9F1, #FBF9F1, #FBF9F1, #FBF9F1,
-        #2E6CB8, #2B5DAA, #2B5DAA, #3C70AE, #325E98, #2B63AD,
-        #749DDB, #3467B6, #434C54
-    );
+    --color-selection-bar: linear-gradient(to right,
+            #FBF9F1, #FBF9F1, #FBF9F1, #FBF9F1, #FBF9F1, #FBF9F1,
+            #2E6CB8, #2B5DAA, #2B5DAA, #3C70AE, #325E98, #2B63AD,
+            #749DDB, #3467B6, #434C54);
 }
 
 /* 暗色模式 - 蓝调深色 */
@@ -93,14 +102,15 @@
     --text-tertiary: rgba(251, 249, 241, 0.55);
 
     --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.3),
-                   0 8px 24px rgba(0, 0, 0, 0.4);
+        0 8px 24px rgba(0, 0, 0, 0.4);
 }
 
 /* ============================================
  * 全局文字样式
  * ============================================ */
 
-html, body {
+html,
+body {
     color: var(--text-primary);
     background-color: var(--page-bg);
     font-feature-settings: "ss01", "cv11";
@@ -114,7 +124,12 @@ html, body {
 }
 
 /* 标题统一使用衬线字体 */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     color: var(--brand-charcoal);
     letter-spacing: -0.015em;
     font-family:
@@ -216,82 +231,22 @@ a:hover {
  * 把 banner 图区域强制改成纯蓝色
  * ============================================ */
 
-/* 当 GlassWallpaper 组件存在时，禁用旧的手动分栏背景和伪元素分隔线，
-   让 GlassWallpaper 接管 #wallpaper-wrapper 的视觉呈现 */
-#wallpaper-wrapper:has(.glass-wallpaper) {
-    background: none !important;
-    background-color: transparent !important;
-    background-image: none !important;
-    overflow: visible !important;
-    isolation: unset !important;
-}
-#wallpaper-wrapper:has(.glass-wallpaper)::after {
-    display: none !important;
-}
+
 
 @media (max-width: 1023px) {
     #wallpaper-wrapper:has(.glass-wallpaper) {
         background: none !important;
         background-image: none !important;
     }
+
     #wallpaper-wrapper:has(.glass-wallpaper)::after {
         display: none !important;
     }
 }
 
-#wallpaper-wrapper {
-    /* 5 列玻璃分栏背景 - kaiko.ai 风格 */
-    background-color: #1A2D52;
-    background-image:
-        /* 第1列 - 深蓝玻璃 */
-        linear-gradient(180deg, rgba(15, 26, 46, 0.95), rgba(26, 45, 82, 0.95)),
-        /* 第2列 - 主蓝玻璃 */
-        linear-gradient(180deg, rgba(43, 93, 170, 0.90), rgba(46, 108, 184, 0.90)),
-        /* 第3列 - 中蓝玻璃 */
-        linear-gradient(180deg, rgba(46, 108, 184, 0.75), rgba(60, 112, 174, 0.75)),
-        /* 第4列 - 浅蓝玻璃 */
-        linear-gradient(180deg, rgba(116, 157, 219, 0.60), rgba(140, 178, 230, 0.60)),
-        /* 第5列 - 米白玻璃（亮处） */
-        linear-gradient(180deg, rgba(251, 249, 241, 0.60), rgba(251, 249, 241, 0.85));
-    background-repeat: no-repeat;
-    background-size: 20% 100%, 22% 100%, 22% 100%, 20% 100%, 16% 100%;
-    background-position: 0 0, 20% 0, 42% 0, 64% 0, 84% 0;
-    overflow: hidden;
-    position: relative;
-    isolation: isolate;
-}
 
-/* 列与列之间的玻璃分隔高光线 */
-#wallpaper-wrapper::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 5;
-    pointer-events: none;
-    background:
-        linear-gradient(90deg,
-            transparent 0%,
-            transparent 20%,
-            rgba(255, 255, 255, 0.25) 20%,
-            rgba(255, 255, 255, 0.25) calc(20% + 1.5px),
-            transparent calc(20% + 1.5px),
-            transparent 42%,
-            rgba(255, 255, 255, 0.25) 42%,
-            rgba(255, 255, 255, 0.25) calc(42% + 1.5px),
-            transparent calc(42% + 1.5px),
-            transparent 64%,
-            rgba(255, 255, 255, 0.28) 64%,
-            rgba(255, 255, 255, 0.28) calc(64% + 1.5px),
-            transparent calc(64% + 1.5px),
-            transparent 84%,
-            rgba(255, 255, 255, 0.35) 84%,
-            rgba(255, 255, 255, 0.35) calc(84% + 1.5px),
-            transparent calc(84% + 1.5px)
-        );
-    mix-blend-mode: screen;
-}
+
+
 
 #banner-images-container,
 .banner-image-slot-desktop,
@@ -300,12 +255,6 @@ a:hover {
     background-color: transparent !important;
 }
 
-/* 把 banner 区域内的图片淡化隐藏，让分栏玻璃透出来 */
-#wallpaper-wrapper #banner,
-#wallpaper-wrapper img,
-#wallpaper-wrapper .slide-item img {
-    opacity: 0 !important;
-}
 
 /* 让文字 overlay 在分栏之上 */
 #banner-overlay-container,
@@ -359,6 +308,7 @@ a:hover {
         background-size: 33% 100%, 34% 100%, 33% 100%;
         background-position: 0 0, 33% 0, 67% 0;
     }
+
     #wallpaper-wrapper::after {
         background:
             linear-gradient(90deg,
@@ -370,8 +320,7 @@ a:hover {
                 transparent 67%,
                 rgba(255, 255, 255, 0.32) 67%,
                 rgba(255, 255, 255, 0.32) calc(67% + 1.5px),
-                transparent calc(67% + 1.5px)
-            );
+                transparent calc(67% + 1.5px));
     }
 }
 
@@ -395,32 +344,102 @@ a:hover {
     height: 100%;
 }
 
-.color-brand-bar span:nth-child(1) { background-color: #FBF9F1; }
-.color-brand-bar span:nth-child(2) { background-color: #FBF9F1; }
-.color-brand-bar span:nth-child(3) { background-color: #FBF9F1; }
-.color-brand-bar span:nth-child(4) { background-color: #2E6CB8; }
-.color-brand-bar span:nth-child(5) { background-color: #2B5DAA; }
-.color-brand-bar span:nth-child(6) { background-color: #3C70AE; }
-.color-brand-bar span:nth-child(7) { background-color: #325E98; }
-.color-brand-bar span:nth-child(8) { background-color: #2B63AD; }
-.color-brand-bar span:nth-child(9) { background-color: #749DDB; }
-.color-brand-bar span:nth-child(10) { background-color: #3467B6; }
-.color-brand-bar span:nth-child(11) { background-color: #434C54; }
-.color-brand-bar span:nth-child(12) { background-color: #434C54; }
+.color-brand-bar span:nth-child(1) {
+    background-color: #FBF9F1;
+}
+
+.color-brand-bar span:nth-child(2) {
+    background-color: #FBF9F1;
+}
+
+.color-brand-bar span:nth-child(3) {
+    background-color: #FBF9F1;
+}
+
+.color-brand-bar span:nth-child(4) {
+    background-color: #2E6CB8;
+}
+
+.color-brand-bar span:nth-child(5) {
+    background-color: #2B5DAA;
+}
+
+.color-brand-bar span:nth-child(6) {
+    background-color: #3C70AE;
+}
+
+.color-brand-bar span:nth-child(7) {
+    background-color: #325E98;
+}
+
+.color-brand-bar span:nth-child(8) {
+    background-color: #2B63AD;
+}
+
+.color-brand-bar span:nth-child(9) {
+    background-color: #749DDB;
+}
+
+.color-brand-bar span:nth-child(10) {
+    background-color: #3467B6;
+}
+
+.color-brand-bar span:nth-child(11) {
+    background-color: #434C54;
+}
+
+.color-brand-bar span:nth-child(12) {
+    background-color: #434C54;
+}
 
 /* 暗色模式下色条稍暗 */
-:root.dark .color-brand-bar span:nth-child(1) { background-color: #749DDB; }
-:root.dark .color-brand-bar span:nth-child(2) { background-color: #749DDB; }
-:root.dark .color-brand-bar span:nth-child(3) { background-color: #3467B6; }
-:root.dark .color-brand-bar span:nth-child(4) { background-color: #2E6CB8; }
-:root.dark .color-brand-bar span:nth-child(5) { background-color: #2B5DAA; }
-:root.dark .color-brand-bar span:nth-child(6) { background-color: #3C70AE; }
-:root.dark .color-brand-bar span:nth-child(7) { background-color: #325E98; }
-:root.dark .color-brand-bar span:nth-child(8) { background-color: #2B63AD; }
-:root.dark .color-brand-bar span:nth-child(9) { background-color: #749DDB; }
-:root.dark .color-brand-bar span:nth-child(10) { background-color: #3467B6; }
-:root.dark .color-brand-bar span:nth-child(11) { background-color: #434C54; }
-:root.dark .color-brand-bar span:nth-child(12) { background-color: #434C54; }
+:root.dark .color-brand-bar span:nth-child(1) {
+    background-color: #749DDB;
+}
+
+:root.dark .color-brand-bar span:nth-child(2) {
+    background-color: #749DDB;
+}
+
+:root.dark .color-brand-bar span:nth-child(3) {
+    background-color: #3467B6;
+}
+
+:root.dark .color-brand-bar span:nth-child(4) {
+    background-color: #2E6CB8;
+}
+
+:root.dark .color-brand-bar span:nth-child(5) {
+    background-color: #2B5DAA;
+}
+
+:root.dark .color-brand-bar span:nth-child(6) {
+    background-color: #3C70AE;
+}
+
+:root.dark .color-brand-bar span:nth-child(7) {
+    background-color: #325E98;
+}
+
+:root.dark .color-brand-bar span:nth-child(8) {
+    background-color: #2B63AD;
+}
+
+:root.dark .color-brand-bar span:nth-child(9) {
+    background-color: #749DDB;
+}
+
+:root.dark .color-brand-bar span:nth-child(10) {
+    background-color: #3467B6;
+}
+
+:root.dark .color-brand-bar span:nth-child(11) {
+    background-color: #434C54;
+}
+
+:root.dark .color-brand-bar span:nth-child(12) {
+    background-color: #434C54;
+}
 
 /* ============================================
  * 滚动条配色
@@ -462,17 +481,45 @@ a:hover {
  * 文本对比度增强
  * ============================================ */
 
-.text-90 { color: rgba(67, 76, 84, 0.90); }
-.text-75 { color: rgba(67, 76, 84, 0.75); }
-.text-50 { color: rgba(67, 76, 84, 0.55); }
-.text-30 { color: rgba(67, 76, 84, 0.35); }
-.text-25 { color: rgba(67, 76, 84, 0.30); }
+.text-90 {
+    color: rgba(67, 76, 84, 0.90);
+}
 
-:root.dark .text-90 { color: rgba(251, 249, 241, 0.92); }
-:root.dark .text-75 { color: rgba(251, 249, 241, 0.78); }
-:root.dark .text-50 { color: rgba(251, 249, 241, 0.58); }
-:root.dark .text-30 { color: rgba(251, 249, 241, 0.38); }
-:root.dark .text-25 { color: rgba(251, 249, 241, 0.30); }
+.text-75 {
+    color: rgba(67, 76, 84, 0.75);
+}
+
+.text-50 {
+    color: rgba(67, 76, 84, 0.55);
+}
+
+.text-30 {
+    color: rgba(67, 76, 84, 0.35);
+}
+
+.text-25 {
+    color: rgba(67, 76, 84, 0.30);
+}
+
+:root.dark .text-90 {
+    color: rgba(251, 249, 241, 0.92);
+}
+
+:root.dark .text-75 {
+    color: rgba(251, 249, 241, 0.78);
+}
+
+:root.dark .text-50 {
+    color: rgba(251, 249, 241, 0.58);
+}
+
+:root.dark .text-30 {
+    color: rgba(251, 249, 241, 0.38);
+}
+
+:root.dark .text-25 {
+    color: rgba(251, 249, 241, 0.30);
+}
 
 /* ============================================
  * 浮动面板适配
@@ -495,21 +542,17 @@ a:hover {
  * ============================================ */
 
 .top-gradient-highlight {
-    background: linear-gradient(
-        to bottom,
-        rgba(251, 249, 241, 0.6) 0%,
-        rgba(251, 249, 241, 0.3) 30%,
-        transparent 100%
-    );
+    background: linear-gradient(to bottom,
+            rgba(251, 249, 241, 0.6) 0%,
+            rgba(251, 249, 241, 0.3) 30%,
+            transparent 100%);
 }
 
 :root.dark .top-gradient-highlight {
-    background: linear-gradient(
-        to bottom,
-        rgba(15, 26, 46, 0.6) 0%,
-        rgba(15, 26, 46, 0.3) 30%,
-        transparent 100%
-    );
+    background: linear-gradient(to bottom,
+            rgba(15, 26, 46, 0.6) 0%,
+            rgba(15, 26, 46, 0.3) 30%,
+            transparent 100%);
 }
 
 /* ============================================
@@ -517,24 +560,25 @@ a:hover {
  * ============================================ */
 
 @media (min-width: 1024px) {
+
     /* 半透明模式：淡蓝白色 */
-    body:has(#wallpaper-wrapper) #navbar[data-transparent-mode="semi"] > div,
-    #wallpaper-wrapper ~ * #navbar[data-transparent-mode="semi"] > div {
+    body:has(#wallpaper-wrapper) #navbar[data-transparent-mode="semi"]>div,
+    #wallpaper-wrapper~* #navbar[data-transparent-mode="semi"]>div {
         background: rgba(251, 249, 241, 0.78) !important;
         backdrop-filter: blur(20px) saturate(180%) !important;
         -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
     }
 
     /* 滚动后的导航栏 */
-    #navbar.navbar-sticky-shadow[data-transparent-mode="semi"] > div {
+    #navbar.navbar-sticky-shadow[data-transparent-mode="semi"]>div {
         background: rgba(251, 249, 241, 0.95) !important;
         backdrop-filter: blur(24px) saturate(180%) !important;
         box-shadow: 0 2px 20px rgba(43, 93, 170, 0.08) !important;
     }
 
     /* 暗色模式 */
-    :root.dark body:has(#wallpaper-wrapper) #navbar[data-transparent-mode="semi"] > div,
-    :root.dark #wallpaper-wrapper ~ * #navbar[data-transparent-mode="semi"] > div {
+    :root.dark body:has(#wallpaper-wrapper) #navbar[data-transparent-mode="semi"]>div,
+    :root.dark #wallpaper-wrapper~* #navbar[data-transparent-mode="semi"]>div {
         background: rgba(26, 39, 66, 0.7) !important;
     }
 }
@@ -635,6 +679,7 @@ body:has(#wallpaper-wrapper) #navbar[data-is-home="true"][data-transparent-mode=
 .scroll-fade-left {
     background: linear-gradient(to left, transparent, #ffffff) !important;
 }
+
 .scroll-fade-right {
     background: linear-gradient(to right, transparent, #ffffff) !important;
 }
@@ -681,6 +726,7 @@ body:has(#wallpaper-wrapper) #navbar[data-is-home="true"][data-transparent-mode=
 :root.dark .scroll-fade-left {
     background: linear-gradient(to left, transparent, #1A2742) !important;
 }
+
 :root.dark .scroll-fade-right {
     background: linear-gradient(to right, transparent, #1A2742) !important;
 }
