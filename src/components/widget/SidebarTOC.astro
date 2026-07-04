@@ -1,50 +1,28 @@
 ---
 import type { MarkdownHeading } from "astro";
-import "@/styles/toc.css";
-import WidgetLayout from "@/components/common/WidgetLayout.astro";
 import I18nKey from "@/i18n/i18nKey";
 import { i18n } from "@/i18n/translation";
-import type { WidgetComponentConfig } from "@/types/config";
+import "@/styles/toc.css";
 
 interface Props {
 	headings: MarkdownHeading[];
-	class?: string;
-	style?: string;
-	widgetConfig?: WidgetComponentConfig;
 }
 
-const {
-	headings: _headings = [],
-	class: className,
-	style,
-	widgetConfig,
-} = Astro.props;
-
-const showTitle = widgetConfig?.showTitle !== false;
+const { headings: _headings = [] } = Astro.props;
 ---
 
-<WidgetLayout
-  name={i18n(I18nKey.tableOfContents)}
-  showTitle={showTitle}
-  id="sidebar-toc"
-  class={className}
-  style={style}
+<div
+  class="card-base transition-all duration-700 mb-4 rounded-(--radius-large) p-5 sticky top-[0.01rem] max-h-[calc(100vh-6rem)] flex flex-col"
 >
-  <div class="toc-scroll-container custom-scrollbar">
-    <div
-      class="toc-content"
-      id="sidebar-toc-content"
-    >
+  <h2 class="text-lg font-bold text-neutral-900 dark:text-neutral-100 mb-3 transition shrink-0">
+    {i18n(I18nKey.tableOfContents)}
+  </h2>
+  <div class="toc-scroll-container custom-scrollbar grow min-h-0">
+    <div class="toc-content" id="sidebar-toc-content">
       <!-- TOC内容将由JavaScript动态生成 -->
     </div>
   </div>
-</WidgetLayout>
-
-<style lang="stylus">
-/* SidebarTOC 特定样式 */
-.toc-scroll-container
-	max-height: calc(100vh - 25rem)
-</style>
+</div>
 
 <script>
   import { TOCManager } from "@/utils/toc-utils";
@@ -55,10 +33,9 @@ const showTitle = widgetConfig?.showTitle !== false;
     };
   }
 
-  async function initSidebarTOC() {
+  function initSidebarTOC() {
     const tocContent = document.getElementById("sidebar-toc-content");
     if (!tocContent) return;
-
 
     try {
       // 清理旧实例
@@ -74,36 +51,30 @@ const showTitle = widgetConfig?.showTitle !== false;
         scrollOffset: 80,
       });
 
-      // 初始化
       window.SidebarTOC.manager.init();
     } catch (error) {
       console.error("Failed to load TOCManager for SidebarTOC:", error);
     }
   }
 
-  // 初始化
-  // 确保 DOM 准备好后再执行
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", initSidebarTOC);
   } else {
     initSidebarTOC();
   }
 
-  // 页面切换时重新初始化
+  // 页面切换时重新初始化（swup / Astro）
   document.addEventListener("swup:contentReplaced", () => {
     setTimeout(initSidebarTOC, 100);
   });
-  
-  // Astro 页面切换事件
   document.addEventListener("astro:page-load", () => {
     setTimeout(initSidebarTOC, 100);
   });
-  
-  // 浏览器导航事件
+
   window.addEventListener("popstate", () => {
     setTimeout(initSidebarTOC, 200);
   });
-  
+
   // 监听 hashchange（但排除 TOC 内部导航）
   window.addEventListener("hashchange", () => {
     if (!window.tocInternalNavigation) {
@@ -112,7 +83,6 @@ const showTitle = widgetConfig?.showTitle !== false;
     window.tocInternalNavigation = false;
   });
 
-  // 密码解密后重新初始化 TOC
   document.addEventListener("password:decrypted", () => {
     setTimeout(initSidebarTOC, 200);
   });

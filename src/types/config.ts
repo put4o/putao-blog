@@ -25,16 +25,6 @@ export type { Live2DWidgetConfig, SpineModelConfig } from "./pioConfig";
 export type { PlantUMLConfig } from "./plantumlConfig";
 export type { ProfileConfig } from "./profileConfig";
 export type {
-	AdConfig,
-	CalendarConfig,
-	MobileBottomComponentConfig,
-	SidebarLayoutConfig,
-	SiteInfoConfig,
-	WidgetComponentConfig,
-	WidgetComponentType,
-	WidgetSpecificConfig,
-} from "./sidebarConfig";
-export type {
 	Favicon,
 	LIGHT_DARK_MODE,
 	SiteConfig,

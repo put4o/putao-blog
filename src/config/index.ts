@@ -3,7 +3,6 @@
 
 // 类型导出
 export type {
-	AdConfig,
 	AnalyticsConfig,
 	AnnouncementConfig,
 	BackgroundWallpaperConfig,
@@ -19,14 +18,10 @@ export type {
 	PlantUMLConfig,
 	ProfileConfig,
 	SakuraConfig,
-	SidebarLayoutConfig,
 	SiteConfig,
 	SponsorConfig,
 	SponsorItem,
 	SponsorMethod,
-	WidgetComponentConfig,
-	WidgetComponentType,
-	WidgetSpecificConfig,
 } from "../types/config";
 export type {
 	BuiltinFontProvider,
@@ -55,7 +50,7 @@ export { live2dWidgetConfig, spineModelConfig } from "./pioConfig"; // 看板娘
 export { plantumlConfig } from "./plantumlConfig"; // PlantUML 图表配置
 export { profileConfig } from "./profileConfig"; // 用户资料配置
 // 布局配置
-export { sidebarLayoutConfig } from "./sidebarConfig"; // 侧边栏布局配置
+export { sidebarTocConfig } from "./sidebarConfig"; // 文章页右侧目录开关
 // 核心配置
 export { siteConfig } from "./siteConfig"; // 站点基础配置
 export { sponsorConfig } from "./sponsorConfig"; // 打赏配置

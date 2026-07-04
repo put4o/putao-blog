@@ -2,7 +2,7 @@
 import type { MarkdownHeading } from "astro";
 import { Icon } from "astro-icon/components";
 import FloatingButton from "@/components/common/FloatingButton.astro";
-import { sidebarLayoutConfig } from "@/config/sidebarConfig";
+import { sidebarTocConfig } from "@/config/sidebarConfig";
 import I18nKey from "@/i18n/i18nKey";
 import { i18n } from "@/i18n/translation";
 import "@/styles/toc.css";
@@ -12,17 +12,12 @@ interface Props {
 }
 
 let { headings: _ = [] } = Astro.props;
-// ... (保留之前的逻辑)
-// 检查侧边栏目录组件是否启用
-const sidebarTocComponent = sidebarLayoutConfig.rightComponents?.find(
-	(c) => c.type === "sidebarToc",
-);
-const isSidebarTocEnabled = sidebarTocComponent?.enable ?? false;
-const sidebarPosition = sidebarLayoutConfig.position;
+// 文章页桌面端右侧目录启用状态
+const isSidebarTocEnabled = !!sidebarTocConfig.enable;
 ---
 
 <!-- 悬浮TOC按钮 -->
-<div id="floating-toc-wrapper" class="floating-toc-wrapper" data-is-sidebar-toc-enabled={String(isSidebarTocEnabled)} data-sidebar-position={sidebarPosition} data-show-both-sidebars-on-post={String(sidebarLayoutConfig.showBothSidebarsOnPostPage ?? false)}>
+<div id="floating-toc-wrapper" class="floating-toc-wrapper" data-is-sidebar-toc-enabled={String(isSidebarTocEnabled)}>
   <FloatingButton
     id="floating-toc-btn"
     icon="material-symbols:format-list-bulleted"
@@ -228,24 +223,15 @@ const sidebarPosition = sidebarLayoutConfig.position;
 
   // 检查是否应该显示悬浮目录
   function shouldShowFloatingTOC() {
-    // 检查是否为文章页面
+    // 仅文章页显示
     if (!window.FloatingTOC.isPostPage()) {
       return false;
     }
 
-    const wrapper = document.querySelector('.floating-toc-wrapper');
-    const sidebarPosition = wrapper?.getAttribute('data-sidebar-position') || 'left';
-    const showBothSidebarsOnPost = wrapper?.getAttribute('data-show-both-sidebars-on-post') === 'true';
-
-    // 双侧边栏模式（含文章页临时双侧栏）：小屏幕或侧边栏目录未启用时显示悬浮目录
-    const effectiveIsBothSidebars = sidebarPosition === 'both' || showBothSidebarsOnPost;
-    if (effectiveIsBothSidebars) {
-      const isSmallScreen = window.innerWidth < 1280;
-      return isSmallScreen || !isSidebarTocEnabled;
-    }
-
-    // 单侧边栏模式（left或right），对侧没有侧边栏目录，始终显示悬浮目录
-    return true;
+    // 桌面端 (lg) 有右侧目录时，隐藏悬浮目录
+    // 移动端 (<lg) 或目录被禁用时，显示悬浮目录
+    const isDesktop = window.innerWidth >= 1024;
+    return !(isDesktop && isSidebarTocEnabled);
   }
 
   // 更新悬浮目录的显示状态
