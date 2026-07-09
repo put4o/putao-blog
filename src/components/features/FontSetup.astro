@@ -7,6 +7,12 @@
  * 本组件负责渲染 <Font /> 标签并设置 body 字体和区域覆盖 CSS 变量。
  *
  * 字体的 fallback 由各字体定义中的 fallbacks 字段控制（Astro Font API 处理），
+ *
+ * FOUT 修复策略：
+ * 1. body 默认 visibility:hidden，opacity:0，字体加载完成后才显示
+ * 2. 事件驱动：document.fonts.ready / fontsLoaded fallback
+ * 3. 兜底：4s 超时强制显示（防止字体加载卡住）
+ * 4. 字体 CSS 默认 display:swap 允许 FOIT 闪字
  */
 import { Font } from "astro:assets";
 import { fontConfig } from "@/config";
@@ -59,32 +65,56 @@ const navbarTitleFontVar = fontConfig.enable
   />
 ))}
 
-<!-- 区域字体 CSS 变量 + body 字体 -->
+<!-- 区域字体 CSS 变量 + body 字体 + FOUT 修复 -->
 {fontConfig.enable && (bannerTitleFontVar || bannerSubtitleFontVar || navbarTitleFontVar || selectedFontVars.length > 0) && (
   <style
     set:html={`
-    ${bannerTitleFontVar || bannerSubtitleFontVar || navbarTitleFontVar ? `:root {
+    :root {
       ${bannerTitleFontVar ? `--font-banner-title: var(${bannerTitleFontVar}, inherit);` : ""}
       ${bannerSubtitleFontVar ? `--font-banner-subtitle: var(${bannerSubtitleFontVar}, inherit);` : ""}
       ${navbarTitleFontVar ? `--font-navbar-title: var(${navbarTitleFontVar}, inherit);` : ""}
-    }` : ""}
+    }
 
     body {
       font-family: ${bodyFontFamily};
     }
-  `}
+
+    /* FOUT 修复：字体加载完成前隐藏内容，加载完成后淡入 */
+    body:not(.fonts-ready) {
+      visibility: hidden;
+    }
+    body.fonts-ready {
+      visibility: visible;
+      animation: fonts-fade-in 0.3s ease-out;
+    }
+    @keyframes fonts-fade-in {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    /* 字体 display:swap 防止长时间 FOIT */
+    `}
   />
 )}
 
-<script>
-  // 字体加载完成事件
-  if (document.fonts && typeof document.fonts.ready !== "undefined") {
-    document.fonts.ready
-      .then(() => {
-        document.dispatchEvent(new CustomEvent("fontsLoaded"));
-      })
-      .catch((error) => {
-        console.warn("Font loading failed:", error);
-      });
-  }
+<script is:inline>
+  (function() {
+    var FONT_TIMEOUT_MS = 4000;
+    var shown = false;
+
+    function showBody() {
+      if (shown || document.body.classList.contains('fonts-ready')) return;
+      shown = true;
+      document.body.classList.add('fonts-ready');
+    }
+
+    // 字体实际加载完成后再显示（最理想时机）
+    if (document.fonts) {
+      document.fonts.ready.then(showBody).catch(function() { showBody(); });
+      document.fonts.addEventListener('loadingdone', showBody);
+    }
+
+    // 兜底：超时强制显示（防止字体文件加载卡住或 404）
+    setTimeout(showBody, FONT_TIMEOUT_MS);
+  })();
 </script>
