@@ -99,7 +99,9 @@ export default defineConfig({
 			containers: [
 				"#banner-overlay-container",
 				"#banner-dim-container",
+				"#main-grid",
 				"#swup-container",
+				"#sidebar-toc-wrapper",
 				"#floating-toc-wrapper",
 			],
 			smoothScrolling: false,
