@@ -6,7 +6,7 @@ description: 结合项目学习grpc与protobuf的学习笔记，主要关注是�
 tags:
   - 后端
   - 通信协议
-category: 后端学习
+category: 后端
 draft: false
 ---
 # gRPC & Protobuf 知识点整理
