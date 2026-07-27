@@ -1,7 +1,7 @@
 ---
 title: claude code的层层拼装
 published: 2026-07-27
-pinned: true
+pinned: false
 description: 学习了一下cc的原理，笔记记录一下cc从一个agent到一套harness的流程与思想
 tags:
   - Agent

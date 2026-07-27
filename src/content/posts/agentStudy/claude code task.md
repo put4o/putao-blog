@@ -1,7 +1,7 @@
 ---
 title: claude code task模块学习
 published: 2026-07-22
-pinned: true
+pinned: false
 description: 学习claude code的task模块的学习笔记
 tags:
   - claude_code
