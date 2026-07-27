@@ -41,31 +41,33 @@ session是服务器为用户创建的一个用户专属的数据空间；用来�
 
 ## 实践案例
 1. 用户登录，创建，set信息
-	 ```java
+```java
 	   // 2. 创建 Session（关键操作）
 	    HttpSession session = request.getSession(); 
 	    
 	    // 3. 将用户信息存入 Session（服务器端）
 	    session.setAttribute("userInfo", username); 
 	    session.setAttribute("isLogin", true);
-	   ```
-1.   浏览器接收到 `Set-Cookie` 头，将 `JSESSIONID=ABC123` 保存到本地。
+```
+
+2.   浏览器接收到 `Set-Cookie` 头，将 `JSESSIONID=ABC123` 保存到本地。
    
-2. 用户再次访问，进行校验
-   
-   ```java
-   // 2. 服务器根据 Cookie 中的 JSESSIONID 找到对应的 Session
-HttpSession session = request.getSession(false); // false 表示不存在不新建
-// 3. 校验用户是否已登录
-if (session != null && session.getAttribute("isLogin") != null) {
-    String user = (String) session.getAttribute("userInfo");
-    // 显示用户信息，访问正常
-} else {
-    // 未登录，重定向到登录页
-    response.sendRedirect("login.html");
-}
-   ```
-1. 退出销毁session
+3. 用户再次访问，进行校验
+   `
+```	java
+	// 2. 服务器根据 Cookie 中的 JSESSIONID 找到对应的 Session
+		HttpSession session = request.getSession(false); // false 表示不存在不新建
+		// 3. 校验用户是否已登录
+		if (session != null && session.getAttribute("isLogin") != null) {
+			String user = (String) session.getAttribute("userInfo");
+			// 显示用户信息，访问正常
+		} else {
+		// 未登录，重定向到登录页
+		response.sendRedirect("login.html");
+		}
+```
+
+4. 退出销毁session
 
 
 
