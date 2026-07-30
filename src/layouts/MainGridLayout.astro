@@ -744,19 +744,19 @@ const useGlassBackground =
 <div class={`absolute w-full z-30 pointer-events-none ${mobileNonHomeBannerClass ? 'mobile-main-no-banner' : ''} ${!(isBannerMode && isBackgroundEnabled) ? 'no-banner-layout' : ''}`} style={isFullscreenMode ? 'top: 0;' : `top: ${finalMainPanelTop}`}>
     <!-- The pointer-events-none here prevent blocking the click event of the TOC -->
     <div class="relative w-full xl:w-[92vw] max-w-(--page-width) mx-auto pointer-events-auto">
-        <div id="main-grid" class={mainGridClass}>
+        <div id="main-grid-stack">
+        <div id="main-grid" class={`${mainGridClass} transition-swup-main`}>
             {/* 主内容区 - 始终渲染，包含分类导航栏和 Swup 容器 */}
             <div class={staticBarClass}>
                 {/* 分类导航栏 - 全站渲染并显示 */}
                 {shouldRenderCategoryBar && <div id="category-bar-wrapper"><CategoryBar currentPostCategory={postCategory} /></div>}
                 <main
                     id="swup-container"
-                    class="transition-main"
                     data-current-post-category={postCategory || ""}
                 >
                     {/* 为每个页面提供一个隐藏的h1标题，用于SEO和可访问性 */}
                     <h1 class="sr-only">{title}</h1>
-                    <div id="content-wrapper" class="onload-animation transition-leaving">
+                    <div id="content-wrapper" class="onload-animation">
                         <slot></slot>
                     </div>
                 </main>
@@ -774,6 +774,7 @@ const useGlassBackground =
             </div>
         </div>
 
+        </div>
         <SpineModel></SpineModel>
         {live2dWidgetConfig.enable && <Live2DWidget config={live2dWidgetConfig} />}
     </div>
