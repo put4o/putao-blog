@@ -7,7 +7,7 @@ tags:
   - 视频
   - Firefly
 category: 博客教程
-draft: false
+draft: true
 ---
 
 只需从 YouTube 或其他平台复制嵌入代码，然后将其粘贴到 markdown 文件中。
