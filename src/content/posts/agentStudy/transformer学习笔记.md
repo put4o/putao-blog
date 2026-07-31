@@ -2,7 +2,7 @@
 title: transformer学习笔记
 published: 2026-07-31
 pinned: false
-description:
+description: 系统性学习transformer
 tags:
   - Agent
   - 机器学习
