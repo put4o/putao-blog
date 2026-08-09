@@ -1,6 +1,6 @@
 ---
 title: codex记忆系统学习笔记
-published: 2026-08-26
+published: 2026-08-04
 pinned: false
 description: 关于codex的memory如何生成记忆、如何整理记忆、新对话召回记忆、与cc 的记忆系统的区别
 tags:
