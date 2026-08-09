@@ -1,6 +1,6 @@
 ---
 title: jwt、session、token、cookie
-published: 2026-07-26
+published: 2026-06-02
 pinned: false
 description: 之前实习的时候被问到session和cookie的区别，答得比较浅，本篇笔记用来透彻的学习相关知识
 tags:

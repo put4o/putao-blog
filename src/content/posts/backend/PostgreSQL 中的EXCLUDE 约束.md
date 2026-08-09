@@ -1,6 +1,6 @@
 ---
 title: PostgreSQL 中的EXCLUDE 约束
-published: 2026-07-28
+published: 2026-07-21
 pinned: false
 description: 项目中场景涉及，软删除后重新插入，使用，PostgreSQL 中的EXCLUDE 约束
 tags:

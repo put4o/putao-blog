@@ -1,6 +1,6 @@
 ---
 title: Hello Agent第六章学习笔记
-published: 2026-07-10
+published: 2026-06-10
 pinned: false
 description: 学习Hello Agent中第六章的内容，包括为什么需要框架，以及当前常用框架的介绍与区别
 tags:

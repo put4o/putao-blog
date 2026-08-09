@@ -1,6 +1,6 @@
 ---
 title: Agent学习笔记-rag&HelloAgent
-published: 2026-07-11
+published: 2026-06-13
 pinned: false
 description: 学习HelloAgent中第八章内容的RAG部分，同时记录RAG中的重要知识点
 tags:

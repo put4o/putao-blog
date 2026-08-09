@@ -1,6 +1,6 @@
 ---
 title: http到https
-published: 2026-08-01
+published: 2026-08-05
 pinned: false
 description: 前面学习的关于https的内容比较零碎，没有串起来，这篇学习笔记主要是按递进关系来记录，便于记忆和复习
 tags:

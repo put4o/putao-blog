@@ -1,6 +1,6 @@
 ---
 title: Hello Agent第七章学习笔记
-published: 2026-07-10
+published: 2026-06-12
 pinned: false
 description: 本章讲解了如何构建自己的Agent，需要什么模块，什么组件，什么接口；从而深入学习到一个Agent的构成与工作原理
 tags:
